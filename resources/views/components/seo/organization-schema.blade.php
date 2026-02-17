@@ -1,4 +1,4 @@
-@if(config('app.env') === 'production')
+@production
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -25,4 +25,4 @@
     ]
 }
 </script>
-@endif
+@endproduction
