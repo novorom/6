@@ -12,7 +12,7 @@
         <h1 class="text-3xl font-bold mb-8">Видеоматериалы (2D)</h1>
 
         @if(empty($videos))
-            <p class="text-center py-4">Данные не найдены. Убедитесь, что файл 'storage/app/reports/videos.csv' существует и содержит данные.</p>
+            <p class="text-center py-4">Данные не найдены. Убедитесь, что файл 'otch/videos.xls' существует и содержит данные.</p>
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($videos as $video)

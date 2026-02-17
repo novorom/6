@@ -33,7 +33,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="text-center py-4">Данные не найдены. Убедитесь, что файл 'storage/app/reports/specifications.csv' существует и содержит данные.</td>
+                            <td colspan="3" class="text-center py-4">Данные не найдены. Убедитесь, что файл 'otch/specifications.xls' существует и содержит данные.</td>
                         </tr>
                     @endforelse
                 </tbody>
