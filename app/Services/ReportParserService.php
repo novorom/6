@@ -3,40 +3,57 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ReportParserService
 {
     /**
-     * Общий метод для парсинга CSV файлов.
-     * Принимает имя файла и массив для сопоставления столбцов CSV с полями объекта.
-     * @param string $filename Путь к файлу внутри 'storage/app/'.
-     * @param array $columnMap Карта [ 'CSV Заголовок' => 'имя_свойства_объекта' ].
+     * Общий метод для парсинга XLS/XLSX файлов.
+     * @param string $filename Путь к файлу от корня проекта.
+     * @param array $columnMap Карта [ 'Заголовок в файле' => 'имя_свойства_объекта' ].
      * @return array Массив объектов stdClass.
      */
-    private function parseCsv(string $filename, array $columnMap): array
+    private function parseXls(string $filename, array $columnMap): array
     {
-        if (!Storage::exists($filename)) {
+        $fullPath = base_path($filename);
+        if (!file_exists($fullPath)) {
             return [];
         }
 
-        $contents = Storage::get($filename);
-        $lines = explode(PHP_EOL, trim($contents));
-        $header = str_getcsv(array_shift($lines));
-        $data = [];
+        try {
+            $spreadsheet = IOFactory::load($fullPath);
+            $sheet = $spreadsheet->getActiveSheet();
+            $rows = $sheet->toArray();
 
-        foreach ($lines as $line) {
-            if (empty(trim($line))) {
-                continue;
+            if (count($rows) < 2) {
+                return []; // Нет данных или только заголовок
             }
-            $row = array_combine($header, str_getcsv($line));
-            $item = new \stdClass();
-            foreach ($columnMap as $csvHeader => $objectProperty) {
-                $item->{$objectProperty} = $row[$csvHeader] ?? null;
+
+            $header = array_shift($rows);
+            $headerIndexMap = array_flip($header); // 'Имя колонки' => индекс
+
+            $data = [];
+            foreach ($rows as $row) {
+                if (empty(array_filter($row))) { // Пропускать пустые строки
+                    continue;
+                }
+                $item = new \stdClass();
+                foreach ($columnMap as $fileHeader => $objectProperty) {
+                    if (isset($headerIndexMap[$fileHeader])) {
+                        $columnIndex = $headerIndexMap[$fileHeader];
+                        $item->{$objectProperty} = $row[$columnIndex] ?? null;
+                    } else {
+                        $item->{$objectProperty} = null;
+                    }
+                }
+                $data[] = $item;
             }
-            $data[] = $item;
+
+            return $data;
+        } catch (\Exception $e) {
+            // В реальном приложении здесь должно быть логирование ошибки
+            return [];
         }
-
-        return $data;
     }
 
     /**
@@ -54,7 +71,7 @@ class ReportParserService
             'Скачать' => 'downloadUrl',
             'Подгруппа' => 'subgroup',
         ];
-        $allItems = $this->parseCsv('reports/certificates.csv', $map);
+        $allItems = $this->parseXls('otch/certificates.xls', $map);
 
         return array_filter($allItems, function($item) {
             return isset($item->subgroup) && str_contains($item->subgroup, '2D:');
@@ -70,11 +87,11 @@ class ReportParserService
         $map = [
             'Описание' => 'title',
             'Тип видео' => 'type',
-            'Смотреть' => 'watchUrl', // Предполагаем, что в CSV есть такие колонки
+            'Смотреть' => 'watchUrl',
             'Скачать' => 'downloadUrl',
             'Категория' => 'category',
         ];
-        $allItems = $this->parseCsv('reports/videos.csv', $map);
+        $allItems = $this->parseXls('otch/videos.xls', $map);
 
         return array_filter($allItems, function($item) {
             return isset($item->category) && str_contains($item->category, '2D:');
@@ -96,7 +113,7 @@ class ReportParserService
             'Скачать' => 'downloadUrl',
             'Категория' => 'category',
         ];
-        $allItems = $this->parseCsv('reports/care.csv', $map);
+        $allItems = $this->parseXls('otch/care.xls', $map);
 
         return array_filter($allItems, function($item) {
             return isset($item->category) && str_contains($item->category, '2D:');
@@ -114,8 +131,7 @@ class ReportParserService
             'Смотреть' => 'watchUrl',
             'Скачать' => 'downloadUrl',
         ];
-        // Эта страница не имела фильтра по 2D/3D, поэтому возвращаем все.
-        return $this->parseCsv('reports/videocare.csv', $map);
+        return $this->parseXls('otch/videocare.xls', $map);
     }
 
     /**
@@ -134,7 +150,7 @@ class ReportParserService
             'Скачать' => 'downloadUrl',
             'Категория' => 'category',
         ];
-        $allItems = $this->parseCsv('reports/promotional.csv', $map);
+        $allItems = $this->parseXls('otch/promotional.xls', $map);
 
         return array_filter($allItems, function($item) {
             return isset($item->category) && str_contains($item->category, '2D:');
@@ -157,7 +173,7 @@ class ReportParserService
             'Скачать' => 'downloadUrl',
             'Категория' => 'category',
         ];
-        $allItems = $this->parseCsv('reports/trade.csv', $map);
+        $allItems = $this->parseXls('otch/trade.xls', $map);
 
         return array_filter($allItems, function($item) {
             return isset($item->category) && str_contains($item->category, '2D:');
@@ -178,7 +194,7 @@ class ReportParserService
             'Скачать' => 'downloadUrl',
             'Категория' => 'category',
         ];
-        $allItems = $this->parseCsv('reports/specifications.csv', $map);
+        $allItems = $this->parseXls('otch/specifications.xls', $map);
 
         return array_filter($allItems, function($item) {
             return isset($item->category) && str_contains($item->category, '2D:');
