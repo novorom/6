@@ -1,168 +1,47 @@
 @extends('layout')
 
-@section('title', 'Коллекции и каталог плитки и керамогранита')
-@section('meta_description', 'Обзор коллекций и каталога SKU керамической плитки и керамогранита Cersanit.')
-
-@php
-    // Эта структура данных имитирует результат парсинга коллекций
-    // со страницы https://pvi.cersanit.ru/catalog/2d/collections/
-    $collections = [
-        (object)[
-            'name' => 'Amberwood',
-            'images' => [
-                'https://pvi.cersanit.ru/files/get/2/25882/46806/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/25882/46807/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/25882/46808/800/800/0/',
-            ]
-        ],
-        (object)[
-            'name' => 'Asher',
-            'images' => [
-                'https://pvi.cersanit.ru/files/get/2/25107/42832/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/25107/42833/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/25107/42837/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/25107/42838/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/25107/42839/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/25107/42840/800/800/0/',
-            ]
-        ],
-        (object)[
-            'name' => 'Aspen',
-            'images' => [
-                'https://pvi.cersanit.ru/files/get/2/26870/50159/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/26870/50167/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/26870/50154/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/26870/50155/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/26870/50160/800/800/0/',
-            ]
-        ],
-        (object)[
-            'name' => 'Avalon',
-            'images' => [
-                'https://pvi.cersanit.ru/files/get/2/25885/47230/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/25885/47231/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/25885/47235/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/25885/47236/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/25885/47237/800/800/0/',
-            ]
-        ],
-        (object)[
-            'name' => 'Bliss',
-            'images' => [
-                'https://pvi.cersanit.ru/files/get/2/24517/39855/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/24517/39856/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/24517/39848/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/24517/39849/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/2/24517/39850/800/800/0/',
-            ]
-        ],
-    ];
-
-    // Эта структура данных имитирует результат парсинга SKU
-    // со страницы https://pvi.cersanit.ru/catalog/2d/
-    $skus = [
-        (object)[
-            'bsu_code' => 'A17902',
-            'description' => 'Глаз. керамогранит Amberwood светло-бежевый рельеф 18,5x59,8',
-            'collection_name' => 'Amberwood',
-            'images' => [
-                'https://pvi.cersanit.ru/files/get/11/25864/46574/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/11/25864/46583/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/11/25864/46584/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/11/25864/46575/800/800/0/',
-            ]
-        ],
-        (object)[
-            'bsu_code' => 'A18047',
-            'description' => 'Глаз. керамогранит Aspen светло-серый рельеф 18,5x59,8',
-            'collection_name' => 'Aspen',
-            'images' => [
-                'https://pvi.cersanit.ru/files/get/11/26879/50140/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/11/26879/50141/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/11/26879/50132/800/800/0/',
-            ]
-        ],
-        (object)[
-            'bsu_code' => 'A17916',
-            'description' => 'Глаз. керамогранит Avalon бежевый рельеф 42x42',
-            'collection_name' => 'Avalon',
-            'images' => [
-                'https://pvi.cersanit.ru/files/get/11/25872/46609/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/11/25872/46610/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/11/25872/46611/800/800/0/',
-            ]
-        ],
-        (object)[
-            'bsu_code' => 'A17948',
-            'description' => 'Глаз. керамогранит Bonsai Tree светло-серый рельеф ректификат 21,8x89,8',
-            'collection_name' => 'Bonsai Tree',
-            'images' => [
-                'https://pvi.cersanit.ru/files/get/11/25922/46919/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/11/25922/46920/800/800/0/',
-                'https://pvi.cersanit.ru/files/get/11/25922/46921/800/800/0/',
-            ]
-        ],
-        (object)[
-            'bsu_code' => 'A17974',
-            'description' => 'Настенная плитка Brooklyn цветы светло-серый 29,8x59,8',
-            'collection_name' => 'Brooklyn',
-            'images' => [
-                'https://pvi.cersanit.ru/files/get/11/26053/47542/800/800/0/',
-            ]
-        ],
-    ];
-@endphp
+@section('title', $product->name ?? 'Товар')
+@section('meta_description', Str::limit($product->description, 155))
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8">Каталог коллекций</h1>
-
-        <div class="space-y-12">
-            @foreach($collections as $collection)
-                <div>
-                    <h2 class="text-2xl font-semibold mb-4">{{ $collection->name }}</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                        @foreach($collection->images as $image)
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                                <img src="{{ $image }}" alt="Изображение из коллекции {{ $collection->name }}" class="w-full h-auto object-cover">
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endforeach
+<div class="container mx-auto px-4 py-8">
+    <div class="grid md:grid-cols-2 gap-8">
+        {{-- Image Gallery --}}
+        <div>
+            @if($product->main_image)
+            <img src="{{ $product->main_image }}" alt="{{ $product->name }}" class="w-full rounded-lg shadow-lg">
+            @else
+            <div class="w-full h-96 bg-gray-200 flex items-center justify-center rounded-lg shadow-lg">
+                <span class="text-gray-400 text-6xl">🏺</span>
+            </div>
+            @endif
         </div>
 
-        <h1 class="text-3xl font-bold mb-8 mt-16">Каталог SKU</h1>
+        {{-- Product Info --}}
+        <div>
+            <h1 class="text-4xl font-bold mb-2">{{ $product->name ?? 'Название отсутствует' }}</h1>
+            <p class="text-lg text-gray-600 mb-6">Артикул: {{ $product->sku ?? 'не указан' }}</p>
 
-        <div class="space-y-12">
-            @foreach($skus as $sku)
-                <div>
-                    <h2 class="text-xl font-semibold mb-2">{{ $sku->description }}</h2>
-                    <p class="text-gray-600 mb-4">Код: {{ $sku->bsu_code }} | Коллекция: {{ $sku->collection_name }}</p>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                        @foreach($sku->images as $image)
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                                <img src="{{ $image }}" alt="Изображение для {{ $sku->bsu_code }}" class="w-full h-auto object-cover">
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endforeach
-        </div>
+            {{-- Price could go here --}}
+            {{-- <div class="text-3xl font-bold text-gray-900 mb-6">
+                {{ $product->price ?? 'Цена по запросу' }}
+            </div> --}}
 
-        <div class="mt-16">
-            <h1 class="text-3xl font-bold mb-8">Полезная информация (SEO)</h1>
-            <div class="bg-white shadow-md rounded p-6">
-                <ul class="list-disc list-inside space-y-2">
-                    <li><a href="{{ url('/info/specifications') }}" class="text-blue-500 hover:underline">Технические спецификации</a></li>
-                    <li><a href="{{ url('/info/care') }}" class="text-blue-500 hover:underline">Рекомендации по уходу</a></li>
-                    <li><a href="{{ url('/info/videocare') }}" class="text-blue-500 hover:underline">Видеорекомендации по уходу</a></li>
-                    <li><a href="{{ url('/info/certificates') }}" class="text-blue-500 hover:underline">Сертификаты</a></li>
-                    <li><a href="{{ url('/info/promotional') }}" class="text-blue-500 hover:underline">Рекламные материалы</a></li>
-                    <li><a href="{{ url('/info/trade') }}" class="text-blue-500 hover:underline">Трейд-маркетинг</a></li>
-                    <li><a href="{{ url('/info/videos') }}" class="text-blue-500 hover:underline">Видеоматериалы</a></li>
-                </ul>
+            <div class="mb-6">
+                <a href="https://wa.me/79052050900?text=Здравствуйте, интересует товар {{ $product->name }} (арт: {{ $product->sku }})" target="_blank" class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition inline-block text-center">
+                    Уточнить цену в WhatsApp
+                </a>
+            </div>
+
+            <div class="prose max-w-none">
+                <h2 class="text-2xl font-semibold mb-4">Описание и характеристики</h2>
+                @if(!empty($product->description))
+                    <p class="text-gray-700 whitespace-pre-wrap">{{ $product->description }}</p>
+                @else
+                    <p class="text-gray-500">Описание для этого товара отсутствует.</p>
+                @endif
             </div>
         </div>
     </div>
+</div>
 @endsection

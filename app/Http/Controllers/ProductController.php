@@ -36,4 +36,24 @@ class ProductController extends Controller
             'products' => $products,
         ]);
     }
+
+    /**
+     * Display the specified product.
+     *
+     * @param  string  $sku
+     * @return View
+     */
+    public function show(string $sku): View
+    {
+        $products = collect($this->reportParserService->getProducts());
+        $product = $products->firstWhere('sku', $sku);
+
+        if (!$product) {
+            abort(404, 'Товар не найден');
+        }
+
+        return view('catalog.show', [
+            'product' => $product,
+        ]);
+    }
 }
