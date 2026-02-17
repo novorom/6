@@ -41,6 +41,7 @@
         </div>
 
         <div class="mt-8">
+            {{-- Вывод ссылок пагинации --}}
             {{ $products->links() }}
         </div>
     @endif

@@ -34,15 +34,21 @@ class ProductController extends Controller
     public function index(Request $request): View
     {
         $allProducts = collect($this->reportParserService->getProducts());
-        $perPage = 12; // Количество товаров на странице
-        $currentPage = Paginator::resolveCurrentPage('page');
+        $perPage = 12;
+        $currentPage = Paginator::resolveCurrentPage('page') ?: 1;
 
-        $currentPageItems = $allProducts->slice(($currentPage - 1) * $perPage, $perPage)->all();
+        $currentPageItems = $allProducts->slice(($currentPage - 1) * $perPage, $perPage);
 
-        $products = new LengthAwarePaginator($currentPageItems, $allProducts->count(), $perPage, $currentPage, [
-            'path' => Paginator::resolveCurrentPath(),
-            'pageName' => 'page',
-        ]);
+        $products = new LengthAwarePaginator(
+            $currentPageItems,
+            $allProducts->count(),
+            $perPage,
+            $currentPage,
+            [
+                'path' => Paginator::resolveCurrentPath(),
+                'pageName' => 'page',
+            ]
+        );
 
         return view('catalog.index', [
             'products' => $products,
