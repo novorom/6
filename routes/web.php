@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Services\ReportParserService;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +15,13 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::get('/', function () {
-    return view('homepage'); // Предполагаем, что у вас есть такой view
+Route::get('/', function (ReportParserService $reportParserService) {
+    $allProducts = collect($reportParserService->getProducts());
+    $bestsellers = $allProducts->shuffle()->take(6);
+
+    return view('homepage', [
+        'bestsellers' => $bestsellers
+    ]);
 })->name('home');
 
 Route::get('/catalog', [ProductController::class, 'index'])->name('catalog.index');

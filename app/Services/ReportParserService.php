@@ -268,6 +268,7 @@ class ReportParserService
                 $nameMap = [
                     'sku' => 'код bsu',
                     'name' => 'наименование для сайта',
+                    'main_image' => 'URL изображения',
                     'desc_sku' => 'Артикул',
                     'desc_sku_digital' => 'Артикул цифровой',
                     'desc_name' => 'наименование',
@@ -310,6 +311,7 @@ class ReportParserService
                     // Присвоить основные поля
                     $item->sku = ($indexMap['sku'] != -1 && isset($row[$indexMap['sku']])) ? $row[$indexMap['sku']] : null;
                     $item->name = ($indexMap['name'] != -1 && isset($row[$indexMap['name']])) ? $row[$indexMap['name']] : null;
+                    $item->main_image = ($indexMap['main_image'] != -1 && isset($row[$indexMap['main_image']])) ? $row[$indexMap['main_image']] : null;
 
                     // Собрать описание из всех указанных частей
                     $description_parts = [];
