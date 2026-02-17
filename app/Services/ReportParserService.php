@@ -243,23 +243,92 @@ class ReportParserService
      */
     public function getProducts(): array
     {
-        // Карта колонок для основной выгрузки продуктов.
-        // Пожалуйста, предоставьте правильные названия заголовков для полей, отмеченных как "Ожидает подтверждения".
-        $map = [
-            'Артикул' => 'sku', // Обновлено, предполагается как основной артикул
-            'Артикул цифровой' => 'sku_digital', // Добавлено новое поле
-            'код bsu' => 'sku_bsu', // Сохранено как отдельное поле
-            'Наименование' => 'name', // Ожидает подтверждения
-            'Коллекция' => 'collection', // Ожидает подтверждения
-            'Бренд' => 'brand', // Ожидает подтверждения
-            'Цена' => 'price', // Ожидает подтверждения
-            'Остаток' => 'stock', // Ожидает подтверждения
-            'Ед.Изм.' => 'unit', // Ожидает подтверждения
-            'Описание' => 'description', // Ожидает подтверждения
-            'URL изображения' => 'image_url', // Ожидает подтверждения
-        ];
+        $cacheKey = 'report.products';
+        $filename = 'otch/products_full.xlsx';
 
-        // Предполагается, что основной файл выгрузки будет называться 'products_full.xlsx'
-        return $this->getReportData('report.products', 'otch/products_full.xlsx', $map);
+        return Cache::remember($cacheKey, $this->cacheDuration, function () use ($filename) {
+            $fullPath = base_path($filename);
+            if (!file_exists($fullPath)) {
+                Log::warning("Report file not found: {$fullPath}");
+                return [];
+            }
+
+            try {
+                $spreadsheet = IOFactory::load($fullPath);
+                $sheet = $spreadsheet->getActiveSheet();
+                $rows = $sheet->toArray();
+
+                if (count($rows) < 2) {
+                    return []; // Нет данных или только заголовок
+                }
+
+                $header = array_shift($rows);
+
+                // Найти индексы ключевых столбцов по их именам
+                $nameMap = [
+                    'sku' => 'код bsu',
+                    'name' => 'наименование для сайта',
+                    'desc_sku' => 'Артикул',
+                    'desc_sku_digital' => 'Артикул цифровой',
+                    'desc_name' => 'наименование',
+                ];
+
+                $indexMap = [];
+                foreach ($nameMap as $prop => $colName) {
+                    $searchResult = array_search($colName, $header);
+                    $indexMap[$prop] = $searchResult !== false ? $searchResult : -1;
+                }
+
+                // Определить индексы всех столбцов, которые должны войти в описание
+                $description_indices = [
+                    $indexMap['desc_sku'],
+                    $indexMap['desc_sku_digital'],
+                    $indexMap['desc_name'],
+                    5,  // столбец 6
+                    6,  // столбец 7
+                    9,  // столбец 10
+                    10, // столбец 11
+                    11, // столбец 12
+                    12, // столбец 13
+                ];
+                // Добавить диапазон столбцов с 14 по 63 (индексы с 13 по 62)
+                $description_indices = array_merge($description_indices, range(13, 62));
+                // Отфильтровать ненайденные (-1) и дублирующиеся индексы
+                $description_indices = array_unique(array_filter($description_indices, function ($i) {
+                    return $i >= 0;
+                }));
+                sort($description_indices);
+
+                $data = [];
+                foreach ($rows as $row) {
+                    if (empty(array_filter($row))) { // Пропускать пустые строки
+                        continue;
+                    }
+
+                    $item = new \stdClass();
+
+                    // Присвоить основные поля
+                    $item->sku = ($indexMap['sku'] != -1 && isset($row[$indexMap['sku']])) ? $row[$indexMap['sku']] : null;
+                    $item->name = ($indexMap['name'] != -1 && isset($row[$indexMap['name']])) ? $row[$indexMap['name']] : null;
+
+                    // Собрать описание из всех указанных частей
+                    $description_parts = [];
+                    foreach ($description_indices as $idx) {
+                        if (isset($header[$idx]) && isset($row[$idx]) && $row[$idx] !== '' && $row[$idx] !== null) {
+                            $description_parts[] = trim($header[$idx]) . ': ' . trim($row[$idx]);
+                        }
+                    }
+                    $item->description = implode("\n", $description_parts);
+
+                    $data[] = $item;
+                }
+
+                return $data;
+
+            } catch (\Exception $e) {
+                Log::error("Failed to parse XLS file '{$filename}'. Error: " . $e->getMessage());
+                return [];
+            }
+        });
     }
 }
