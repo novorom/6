@@ -1,20 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CatalogController;
-use App\Http\Controllers\SeoController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ProductController;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
-Route::get('/products/{product:slug}', [CatalogController::class, 'show'])->name('catalog.show');
-Route::get('/collections/{collection}', [CatalogController::class, 'collection'])->name('catalog.collection');
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
 
-Route::get('/sitemap.xml', [SeoController::class, 'sitemap']);
-Route::get('/sitemap-products.xml', [SeoController::class, 'sitemapProducts']);
-Route::get('/robots.txt', [SeoController::class, 'robots']);
-Route::get('/feed.xml', [SeoController::class, 'rssFeed']);
-Route::get('/feed.json', [SeoController::class, 'jsonFeed']);
+Route::get('/', function () {
+    return view('homepage'); // Предполагаем, что у вас есть такой view
+})->name('home');
 
-Route::post('/send-question', [ContactController::class, 'sendQuestion']);
+Route::get('/catalog', [ProductController::class, 'index'])->name('catalog.index');
