@@ -4,35 +4,7 @@
 @section('meta_description', 'Материалы по трейд-маркетингу для керамической плитки и керамогранита.')
 
 @php
-    $materials = [
-        (object)[
-            'date' => '01.11.2022',
-            'brand' => 'Cersanit',
-            'type' => 'Каталог',
-            'description' => 'Спецификация стенда Cersanit L с панелями и артикулами',
-            'fileType' => 'xlsx',
-            'fileSize' => '8.48 МБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/10/22713/31778/',
-        ],
-        (object)[
-            'date' => '01.11.2022',
-            'brand' => 'Meissen Keramik',
-            'type' => 'Каталог',
-            'description' => 'Спецификация стенда MK XL с панелями и артикулами',
-            'fileType' => 'xlsx',
-            'fileSize' => '8.15 МБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/10/22712/31777/',
-        ],
-        (object)[
-            'date' => '11.06.2020',
-            'brand' => 'Cersanit',
-            'type' => 'Презентация',
-            'description' => 'Стендовое оборудование 2D Cersanit 2020',
-            'fileType' => 'pptx',
-            'fileSize' => '30.05 МБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/10/15842/17515/',
-        ],
-    ];
+    $materials = app(App\Services\ReportParserService::class)->getTradeMarketingMaterials();
 @endphp
 
 @section('content')
@@ -50,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 text-sm">
-                    @foreach($materials as $item)
+                    @forelse($materials as $item)
                         <tr class="border-b border-gray-200 hover:bg-gray-100">
                             <td class="py-3 px-6">{{ $item->description }}</td>
                             <td class="py-3 px-6">{{ $item->brand }}</td>
@@ -61,7 +33,11 @@
                                 </a>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-4">Данные не найдены. Убедитесь, что файл 'storage/app/reports/trade.csv' существует и содержит данные.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

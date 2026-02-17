@@ -4,48 +4,7 @@
 @section('meta_description', 'Рекомендации по уходу, укладке и очистке керамической плитки и керамогранита.')
 
 @php
-    $recommendations = [
-        (object)[
-            'date' => '17.10.2024',
-            'type' => 'Другое',
-            'description' => 'Памятка определения кривизны плитки Крупноформатных размеров',
-            'fileType' => 'pdf',
-            'fileSize' => '296.61 КБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/16/25356/42770/',
-        ],
-        (object)[
-            'date' => '02.10.2023',
-            'type' => 'Укладка',
-            'description' => 'Рекомендации по укладке рельефной плитки',
-            'fileType' => 'pdf',
-            'fileSize' => '4.44 МБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/16/24246/37791/',
-        ],
-        (object)[
-            'date' => '22.12.2022',
-            'type' => 'Клей',
-            'description' => 'Рекомендации по удалению клея с поверхности плитки',
-            'fileType' => 'pdf',
-            'fileSize' => '104.63 КБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/16/22996/32418/',
-        ],
-        (object)[
-            'date' => '03.10.2022',
-            'type' => 'Укладка',
-            'description' => 'Рекомендации по укладке Керамогранита',
-            'fileType' => 'pdf',
-            'fileSize' => '136.82 КБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/16/22661/35860/',
-        ],
-        (object)[
-            'date' => '20.09.2022',
-            'type' => 'Воск',
-            'description' => 'Рекомендации по удалению воска с поверхности плитки',
-            'fileType' => 'pdf',
-            'fileSize' => '118.36 КБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/16/22659/35861/',
-        ],
-    ];
+    $recommendations = app(App\Services\ReportParserService::class)->getCareRecommendations();
 @endphp
 
 @section('content')
@@ -63,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 text-sm">
-                    @foreach($recommendations as $rec)
+                    @forelse($recommendations as $rec)
                         <tr class="border-b border-gray-200 hover:bg-gray-100">
                             <td class="py-3 px-6">{{ $rec->description }}</td>
                             <td class="py-3 px-6">{{ $rec->type }}</td>
@@ -74,7 +33,11 @@
                                 </a>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-4">Данные не найдены. Убедитесь, что файл 'storage/app/reports/care.csv' существует и содержит данные.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

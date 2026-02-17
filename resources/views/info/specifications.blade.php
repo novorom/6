@@ -4,36 +4,7 @@
 @section('meta_description', 'Технические спецификации и таблицы соответствия для керамической плитки и керамогранита.')
 
 @php
-    $specifications = [
-        (object)[
-            'date' => '16.01.2026',
-            'description' => '2D_единая спецификация_16.01.2026',
-            'fileType' => 'xlsx',
-            'fileSize' => '142.2 КБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/3/26934/50341/',
-        ],
-        (object)[
-            'date' => '23.12.2025',
-            'description' => '2D_единая спецификация_23.12.2025',
-            'fileType' => 'xlsx',
-            'fileSize' => '149.29 КБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/3/26893/50313/',
-        ],
-        (object)[
-            'date' => '01.10.2025',
-            'description' => '2D_единая спецификация_01.10.2025',
-            'fileType' => 'xlsx',
-            'fileSize' => '149.38 КБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/3/26519/49465/',
-        ],
-        (object)[
-            'date' => '09.07.2024',
-            'description' => 'Качество упаковки паллет',
-            'fileType' => 'pdf',
-            'fileSize' => '400.75 КБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/3/24754/40331/',
-        ],
-    ];
+    $specifications = app(App\Services\ReportParserService::class)->getSpecifications();
 @endphp
 
 @section('content')
@@ -50,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 text-sm">
-                    @foreach($specifications as $spec)
+                    @forelse($specifications as $spec)
                         <tr class="border-b border-gray-200 hover:bg-gray-100">
                             <td class="py-3 px-6">{{ $spec->description }}</td>
                             <td class="py-3 px-6">{{ $spec->date }}</td>
@@ -60,7 +31,11 @@
                                 </a>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center py-4">Данные не найдены. Убедитесь, что файл 'storage/app/reports/specifications.csv' существует и содержит данные.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

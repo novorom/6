@@ -4,53 +4,7 @@
 @section('meta_description', 'Каталоги, логотипы и другие рекламные материалы для керамической плитки и керамогранита.')
 
 @php
-    $materials = [
-        (object)[
-            'date' => '28.01.2026',
-            'brand' => 'Cersanit',
-            'type' => 'Ньюслеттер',
-            'description' => 'Newsletter GPT 60x60 River',
-            'fileType' => 'pdf',
-            'fileSize' => '4.56 МБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/8/26960/50515/',
-        ],
-        (object)[
-            'date' => '21.01.2026',
-            'brand' => 'Cersanit',
-            'type' => 'Ньюслеттер',
-            'description' => 'Newsletter Cersanit GPT 60x60 и Ступени 30x60 Studio',
-            'fileType' => 'pdf',
-            'fileSize' => '8.68 МБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/8/26142/50474/',
-        ],
-        (object)[
-            'date' => '17.12.2025',
-            'brand' => 'Cersanit',
-            'type' => 'Ньюслеттер',
-            'description' => 'Newsletter Cersanit GPT 18x60 Aspen Cherry',
-            'fileType' => 'pdf',
-            'fileSize' => '12.02 МБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/8/26845/50073/',
-        ],
-        (object)[
-            'date' => '20.10.2025',
-            'brand' => 'Meissen Keramik',
-            'type' => 'Лого',
-            'description' => 'Meissen_Keramik_black_горизонтальный_png',
-            'fileType' => 'png',
-            'fileSize' => '116.49 КБ',
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/8/26545/49504/',
-        ],
-        (object)[
-            'date' => '01.01.2024',
-            'brand' => 'Cersanit',
-            'type' => 'Каталог',
-            'description' => 'Каталог 2D Cersanit 2024-2025',
-            'fileType' => 'pdf',
-            'fileSize' => '20 МБ', // Placeholder size
-            'downloadUrl' => 'https://pvi.cersanit.ru/files/download/8/26436/49084/', // Placeholder URL
-        ],
-    ];
+    $materials = app(App\Services\ReportParserService::class)->getPromotionalMaterials();
 @endphp
 
 @section('content')
@@ -68,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 text-sm">
-                    @foreach($materials as $item)
+                    @forelse($materials as $item)
                         <tr class="border-b border-gray-200 hover:bg-gray-100">
                             <td class="py-3 px-6">{{ $item->description }}</td>
                             <td class="py-3 px-6">{{ $item->brand }}</td>
@@ -79,7 +33,11 @@
                                 </a>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-4">Данные не найдены. Убедитесь, что файл 'storage/app/reports/promotional.csv' существует и содержит данные.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
