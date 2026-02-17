@@ -15,7 +15,7 @@
     {{-- @vite('resources/css/app.css') --}}
 
     {{-- SEO JSON-LD Schema for the Organization --}}
-    <x-seo.organization-schema />
+    @include('components.seo.organization-schema')
 </head>
 <body class="antialiased bg-gray-50 text-gray-800">
     <header class="bg-white shadow-md">
