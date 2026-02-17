@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ReportParserService
@@ -22,6 +23,7 @@ class ReportParserService
     {
         $fullPath = base_path($filename);
         if (!file_exists($fullPath)) {
+            Log::warning("Report file not found: {$fullPath}");
             return [];
         }
 
@@ -56,9 +58,32 @@ class ReportParserService
 
             return $data;
         } catch (\Exception $e) {
-            // В реальном приложении здесь должно быть логирование ошибки
+            Log::error("Failed to parse XLS file '{$filename}'. Error: " . $e->getMessage());
             return [];
         }
+    }
+
+    /**
+     * Обобщенный метод для получения, кэширования и фильтрации данных отчета.
+     *
+     * @param string $cacheKey Ключ для кэширования.
+     * @param string $filename Имя файла отчета.
+     * @param array $columnMap Карта колонок.
+     * @param callable|null $filter Функция для фильтрации результатов.
+     * @return array
+     */
+    private function getReportData(string $cacheKey, string $filename, array $columnMap, ?callable $filter = null): array
+    {
+        return Cache::remember($cacheKey, $this->cacheDuration, function () use ($filename, $columnMap, $filter) {
+            $allItems = $this->parseXls($filename, $columnMap);
+
+            if ($filter) {
+                $filteredItems = array_filter($allItems, $filter);
+                return array_values($filteredItems); // Re-index array keys
+            }
+
+            return $allItems;
+        });
     }
 
     /**
@@ -67,22 +92,21 @@ class ReportParserService
      */
     public function getCertificates(): array
     {
-        return Cache::remember('report.certificates', $this->cacheDuration, function () {
-            $map = [
-                'Описание' => 'description',
-                'Тип' => 'type',
-                'Срок окончания' => 'endDate',
-                'Размер файла' => 'fileSize',
-                'Тип файла' => 'fileType',
-                'Скачать' => 'downloadUrl',
-                'Подгруппа' => 'subgroup',
-            ];
-            $allItems = $this->parseXls('otch/certificates.xls', $map);
+        $map = [
+            'Описание' => 'description',
+            'Тип' => 'type',
+            'Срок окончания' => 'endDate',
+            'Размер файла' => 'fileSize',
+            'Тип файла' => 'fileType',
+            'Скачать' => 'downloadUrl',
+            'Подгруппа' => 'subgroup',
+        ];
 
-            return array_filter($allItems, function($item) {
-                return isset($item->subgroup) && str_contains($item->subgroup, '2D:');
-            });
-        });
+        $filter = function($item) {
+            return isset($item->subgroup) && str_contains($item->subgroup, '2D:');
+        };
+
+        return $this->getReportData('report.certificates', 'otch/certificates.xls', $map, $filter);
     }
 
     /**
@@ -91,20 +115,19 @@ class ReportParserService
      */
     public function getVideos(): array
     {
-        return Cache::remember('report.videos', $this->cacheDuration, function () {
-            $map = [
-                'Описание' => 'title',
-                'Тип видео' => 'type',
-                'Смотреть' => 'watchUrl',
-                'Скачать' => 'downloadUrl',
-                'Категория' => 'category',
-            ];
-            $allItems = $this->parseXls('otch/videos.xls', $map);
+        $map = [
+            'Описание' => 'title',
+            'Тип видео' => 'type',
+            'Смотреть' => 'watchUrl',
+            'Скачать' => 'downloadUrl',
+            'Категория' => 'category',
+        ];
 
-            return array_filter($allItems, function($item) {
-                return isset($item->category) && str_contains($item->category, '2D:');
-            });
-        });
+        $filter = function($item) {
+            return isset($item->category) && str_contains($item->category, '2D:');
+        };
+
+        return $this->getReportData('report.videos', 'otch/videos.xls', $map, $filter);
     }
 
     /**
@@ -113,22 +136,21 @@ class ReportParserService
      */
     public function getCareRecommendations(): array
     {
-        return Cache::remember('report.care', $this->cacheDuration, function () {
-            $map = [
-                'Дата' => 'date',
-                'Тип' => 'type',
-                'Описание' => 'description',
-                'Тип файла' => 'fileType',
-                'Размер файла' => 'fileSize',
-                'Скачать' => 'downloadUrl',
-                'Категория' => 'category',
-            ];
-            $allItems = $this->parseXls('otch/care.xls', $map);
+        $map = [
+            'Дата' => 'date',
+            'Тип' => 'type',
+            'Описание' => 'description',
+            'Тип файла' => 'fileType',
+            'Размер файла' => 'fileSize',
+            'Скачать' => 'downloadUrl',
+            'Категория' => 'category',
+        ];
 
-            return array_filter($allItems, function($item) {
-                return isset($item->category) && str_contains($item->category, '2D:');
-            });
-        });
+        $filter = function($item) {
+            return isset($item->category) && str_contains($item->category, '2D:');
+        };
+
+        return $this->getReportData('report.care', 'otch/care.xls', $map, $filter);
     }
 
     /**
@@ -137,14 +159,12 @@ class ReportParserService
      */
     public function getVideoCareRecommendations(): array
     {
-        return Cache::remember('report.videocare', $this->cacheDuration, function () {
-            $map = [
-                'Описание' => 'title',
-                'Смотреть' => 'watchUrl',
-                'Скачать' => 'downloadUrl',
-            ];
-            return $this->parseXls('otch/videocare.xls', $map);
-        });
+        $map = [
+            'Описание' => 'title',
+            'Смотреть' => 'watchUrl',
+            'Скачать' => 'downloadUrl',
+        ];
+        return $this->getReportData('report.videocare', 'otch/videocare.xls', $map);
     }
 
     /**
@@ -153,23 +173,22 @@ class ReportParserService
      */
     public function getPromotionalMaterials(): array
     {
-        return Cache::remember('report.promotional', $this->cacheDuration, function () {
-            $map = [
-                'Дата' => 'date',
-                'Бренд' => 'brand',
-                'Тип' => 'type',
-                'Описание' => 'description',
-                'Тип файла' => 'fileType',
-                'Размер файла' => 'fileSize',
-                'Скачать' => 'downloadUrl',
-                'Категория' => 'category',
-            ];
-            $allItems = $this->parseXls('otch/promotional.xls', $map);
+        $map = [
+            'Дата' => 'date',
+            'Бренд' => 'brand',
+            'Тип' => 'type',
+            'Описание' => 'description',
+            'Тип файла' => 'fileType',
+            'Размер файла' => 'fileSize',
+            'Скачать' => 'downloadUrl',
+            'Категория' => 'category',
+        ];
 
-            return array_filter($allItems, function($item) {
-                return isset($item->category) && str_contains($item->category, '2D:');
-            });
-        });
+        $filter = function($item) {
+            return isset($item->category) && str_contains($item->category, '2D:');
+        };
+
+        return $this->getReportData('report.promotional', 'otch/promotional.xls', $map, $filter);
     }
 
     /**
@@ -178,23 +197,22 @@ class ReportParserService
      */
     public function getTradeMarketingMaterials(): array
     {
-        return Cache::remember('report.trade', $this->cacheDuration, function () {
-            $map = [
-                'Дата' => 'date',
-                'Бренд' => 'brand',
-                'Тип' => 'type',
-                'Описание' => 'description',
-                'Тип файла' => 'fileType',
-                'Размер файла' => 'fileSize',
-                'Скачать' => 'downloadUrl',
-                'Категория' => 'category',
-            ];
-            $allItems = $this->parseXls('otch/trade.xls', $map);
+        $map = [
+            'Дата' => 'date',
+            'Бренд' => 'brand',
+            'Тип' => 'type',
+            'Описание' => 'description',
+            'Тип файла' => 'fileType',
+            'Размер файла' => 'fileSize',
+            'Скачать' => 'downloadUrl',
+            'Категория' => 'category',
+        ];
 
-            return array_filter($allItems, function($item) {
-                return isset($item->category) && str_contains($item->category, '2D:');
-            });
-        });
+        $filter = function($item) {
+            return isset($item->category) && str_contains($item->category, '2D:');
+        };
+
+        return $this->getReportData('report.trade', 'otch/trade.xls', $map, $filter);
     }
 
     /**
@@ -203,20 +221,19 @@ class ReportParserService
      */
     public function getSpecifications(): array
     {
-        return Cache::remember('report.specifications', $this->cacheDuration, function () {
-            $map = [
-                'Дата' => 'date',
-                'Описание' => 'description',
-                'Тип файла' => 'fileType',
-                'Размер файла' => 'fileSize',
-                'Скачать' => 'downloadUrl',
-                'Категория' => 'category',
-            ];
-            $allItems = $this->parseXls('otch/specifications.xls', $map);
+        $map = [
+            'Дата' => 'date',
+            'Описание' => 'description',
+            'Тип файла' => 'fileType',
+            'Размер файла' => 'fileSize',
+            'Скачать' => 'downloadUrl',
+            'Категория' => 'category',
+        ];
 
-            return array_filter($allItems, function($item) {
-                return isset($item->category) && str_contains($item->category, '2D:');
-            });
-        });
+        $filter = function($item) {
+            return isset($item->category) && str_contains($item->category, '2D:');
+        };
+
+        return $this->getReportData('report.specifications', 'otch/specifications.xls', $map, $filter);
     }
 }
