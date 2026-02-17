@@ -25,4 +25,4 @@
     ]
 }
 </script>
-@endproduction
+@endif
