@@ -8,9 +8,9 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 class ReportParserService
 {
     /**
-     * @var int Длительность кэширования в секундах (1 час).
+     * @var int Длительность кэширования в секундах (24 часа).
      */
-    private int $cacheDuration = 3600;
+    private int $cacheDuration = 86400;
 
     /**
      * Общий метод для парсинга XLS/XLSX файлов.
