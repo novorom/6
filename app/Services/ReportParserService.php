@@ -236,4 +236,28 @@ class ReportParserService
 
         return $this->getReportData('report.specifications', 'otch/specifications.xls', $map, $filter);
     }
+
+    /**
+     * Получает данные по всем продуктам из основной выгрузки.
+     * @return array
+     */
+    public function getProducts(): array
+    {
+        // ВАЖНО: Эта карта колонок является ПРЕДПОЛОЖЕНИЕМ.
+        // Пожалуйста, проверьте и исправьте ее в соответствии с реальными заголовками в файле.
+        $map = [
+            'Артикул' => 'sku',
+            'Наименование' => 'name',
+            'Коллекция' => 'collection',
+            'Бренд' => 'brand',
+            'Цена' => 'price',
+            'Остаток' => 'stock',
+            'Ед.Изм.' => 'unit',
+            'Описание' => 'description',
+            'URL изображения' => 'image_url',
+        ];
+
+        // Предполагается, что основной файл выгрузки будет называться 'products_full.xlsx'
+        return $this->getReportData('report.products', 'otch/products_full.xlsx', $map);
+    }
 }
