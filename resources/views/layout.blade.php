@@ -12,7 +12,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
     <!-- Styles -->
-    @vite('resources/css/app.css')
+    {{-- @vite('resources/css/app.css') --}}
 
     {{-- SEO JSON-LD Schema for the Organization --}}
     <x-seo.organization-schema />
@@ -41,7 +41,7 @@
         </div>
     </footer>
 
-    @vite('resources/js/app.js')
+    {{-- @vite('resources/js/app.js') --}}
     @stack('scripts')
 </body>
 </html>
