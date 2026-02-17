@@ -15,34 +15,28 @@
     @else
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @foreach($products as $product)
-                <div class="bg-white border rounded-lg shadow-sm overflow-hidden">
-                    {{-- Здесь может быть изображение товара, если оно будет в данных --}}
-                    {{-- <img src="{{ $product->image_url ?? asset('images/placeholder.png') }}" alt="{{ $product->name }}" class="w-full h-48 object-cover"> --}}
-                    <div class="p-4">
-                        <h2 class="text-lg font-semibold text-gray-800 truncate" title="{{ $product->name }}">
-                            {{ $product->name ?? 'Название отсутствует' }}
-                        </h2>
-                        <p class="text-sm text-gray-600 mt-1">
-                            Артикул: {{ $product->sku ?? 'не указан' }}
-                        </p>
-                        
-                        {{-- Раскомментируйте, если нужно отображать часть описания --}}
-                        {{--
-                        @if(!empty($product->description))
-                        <div class="text-xs text-gray-500 mt-2">
-                            <p class="truncate">{{ Str::limit($product->description, 50) }}</p>
+                {{-- Добавлена проверка на наличие SKU, чтобы избежать ошибок роутинга --}}
+                @if(!empty($product->sku) && !empty($product->name))
+                <div class="bg-white border rounded-lg shadow-sm overflow-hidden transition hover:shadow-lg">
+                    <a href="{{ route('product.show', ['sku' => $product->sku]) }}" class="block">
+                        @if($product->main_image)
+                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}" class="w-full h-48 object-cover">
+                        @else
+                        <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                            <span class="text-gray-400 text-4xl">🏺</span>
                         </div>
                         @endif
-                        --}}
-
-                        {{-- Здесь может быть цена --}}
-                        {{-- 
-                        <div class="mt-4">
-                            <span class="text-xl font-bold text-gray-900">{{ $product->price ?? 'Цена по запросу' }}</span>
-                        </div> 
-                        --}}
-                    </div>
+                        <div class="p-4">
+                            <h2 class="text-lg font-semibold text-gray-800 truncate" title="{{ $product->name }}">
+                                {{ $product->name }}
+                            </h2>
+                            <p class="text-sm text-gray-600 mt-1">
+                                Артикул: {{ $product->sku }}
+                            </p>
+                        </div>
+                    </a>
                 </div>
+                @endif
             @endforeach
         </div>
     @endif

@@ -17,7 +17,13 @@ use App\Services\ReportParserService;
 
 Route::get('/', function (ReportParserService $reportParserService) {
     $allProducts = collect($reportParserService->getProducts());
-    $bestsellers = $allProducts->shuffle()->take(6);
+    
+    // Фильтруем товары, чтобы в хитах были только полноценные карточки с артикулом и изображением
+    $validProducts = $allProducts->filter(function ($product) {
+        return !empty($product->sku) && !empty($product->main_image);
+    });
+
+    $bestsellers = $validProducts->shuffle()->take(6);
 
     return view('homepage', [
         'bestsellers' => $bestsellers
@@ -25,3 +31,4 @@ Route::get('/', function (ReportParserService $reportParserService) {
 })->name('home');
 
 Route::get('/catalog', [ProductController::class, 'index'])->name('catalog.index');
+Route::get('/product/{sku}', [ProductController::class, 'show'])->name('product.show');
