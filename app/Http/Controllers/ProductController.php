@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Services\ReportParserService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductController extends Controller
 {
@@ -26,11 +28,21 @@ class ProductController extends Controller
     /**
      * Display a listing of the products.
      *
+     * @param Request $request
      * @return View
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $products = $this->reportParserService->getProducts();
+        $allProducts = collect($this->reportParserService->getProducts());
+        $perPage = 12; // Количество товаров на странице
+        $currentPage = Paginator::resolveCurrentPage('page');
+
+        $currentPageItems = $allProducts->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $products = new LengthAwarePaginator($currentPageItems, $allProducts->count(), $perPage, $currentPage, [
+            'path' => Paginator::resolveCurrentPath(),
+            'pageName' => 'page',
+        ]);
 
         return view('catalog.index', [
             'products' => $products,

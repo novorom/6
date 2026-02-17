@@ -7,7 +7,7 @@
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-6">Каталог продукции</h1>
 
-    @if(empty($products))
+    @if($products->isEmpty())
         <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
             <p class="font-bold">Информация</p>
             <p>В данный момент товары в каталоге отсутствуют или файл с товарами не найден. Пожалуйста, убедитесь, что файл <code>otch/products_full.xlsx</code> существует и доступен для чтения.</p>
@@ -38,6 +38,10 @@
                 </div>
                 @endif
             @endforeach
+        </div>
+
+        <div class="mt-8">
+            {{ $products->links() }}
         </div>
     @endif
 </div>
