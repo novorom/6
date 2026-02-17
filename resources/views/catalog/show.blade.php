@@ -149,5 +149,20 @@
                 </div>
             @endforeach
         </div>
+
+        <div class="mt-16">
+            <h1 class="text-3xl font-bold mb-8">Полезная информация (SEO)</h1>
+            <div class="bg-white shadow-md rounded p-6">
+                <ul class="list-disc list-inside space-y-2">
+                    <li><a href="{{ url('/info/specifications') }}" class="text-blue-500 hover:underline">Технические спецификации</a></li>
+                    <li><a href="{{ url('/info/care') }}" class="text-blue-500 hover:underline">Рекомендации по уходу</a></li>
+                    <li><a href="{{ url('/info/videocare') }}" class="text-blue-500 hover:underline">Видеорекомендации по уходу</a></li>
+                    <li><a href="{{ url('/info/certificates') }}" class="text-blue-500 hover:underline">Сертификаты</a></li>
+                    <li><a href="{{ url('/info/promotional') }}" class="text-blue-500 hover:underline">Рекламные материалы</a></li>
+                    <li><a href="{{ url('/info/trade') }}" class="text-blue-500 hover:underline">Трейд-маркетинг</a></li>
+                    <li><a href="{{ url('/info/videos') }}" class="text-blue-500 hover:underline">Видеоматериалы</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 @endsection
