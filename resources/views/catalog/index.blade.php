@@ -14,7 +14,7 @@
           <div class="container mx-auto px-4 lg:px-6 py-6">
               <div>
                   <h1 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">Керамическая плитка</h1>
-                  <div class="flex flex-col sm:flex-row gap-3">
+                  <div class="flex flex-row flex-wrap gap-3">
                       <a href="/collections" class="group flex items-center gap-3 bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border border-blue-200 rounded-xl p-4 transition-all
    hover:shadow-md">
                           <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -102,24 +102,36 @@
                               </button>
                               <div id="type-filter" class="filter-content mt-3 space-y-2.5">
                                   <label class="flex items-center gap-3 cursor-pointer group">
-                                      <input type="radio" name="category" value="ceramic-tile" {{ request('category') === 'ceramic-tile' ? 'checked' : '' }} class="w-4 h-4 border-gray-300 text-blue-600
+                                      <input type="checkbox" name="categories[]" value="ceramic-tile" {{ in_array('ceramic-tile', (array)request('categories', [])) ? 'checked' : '' }} class="w-4 h-4 border-gray-300 text-blue-600
   focus:ring-blue-500 cursor-pointer">
                                       <span class="text-sm text-gray-700 group-hover:text-gray-900">Керамическая плитка</span>
                                   </label>
                                   <label class="flex items-center gap-3 cursor-pointer group">
-                                      <input type="radio" name="category" value="ceramic-granite" {{ request('category') === 'ceramic-granite' ? 'checked' : '' }} class="w-4 h-4 border-gray-300 text-blue-600
+                                      <input type="checkbox" name="categories[]" value="ceramic-granite" {{ in_array('ceramic-granite', (array)request('categories', [])) ? 'checked' : '' }} class="w-4 h-4 border-gray-300 text-blue-600
   focus:ring-blue-500 cursor-pointer">
                                       <span class="text-sm text-gray-700 group-hover:text-gray-900">Керамогранит</span>
                                   </label>
                                   <label class="flex items-center gap-3 cursor-pointer group">
-                                      <input type="radio" name="category" value="mosaic" {{ request('category') === 'mosaic' ? 'checked' : '' }} class="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500
+                                      <input type="checkbox" name="categories[]" value="mosaic" {{ in_array('mosaic', (array)request('categories', [])) ? 'checked' : '' }} class="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500
   cursor-pointer">
                                       <span class="text-sm text-gray-700 group-hover:text-gray-900">Мозаика</span>
                                   </label>
                                   <label class="flex items-center gap-3 cursor-pointer group">
-                                      <input type="radio" name="category" value="step" {{ request('category') === 'step' ? 'checked' : '' }} class="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500
+                                      <input type="checkbox" name="categories[]" value="step" {{ in_array('step', (array)request('categories', [])) ? 'checked' : '' }} class="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500
   cursor-pointer">
                                       <span class="text-sm text-gray-700 group-hover:text-gray-900">Ступени</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input type="checkbox" name="categories[]" value="mosaic-mesh" {{ in_array('mosaic-mesh', (array)request('categories', [])) ? 'checked' : '' }} class="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+<span class="text-sm text-gray-700 group-hover:text-gray-900">Мозаика на сетке</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input type="checkbox" name="categories[]" value="wall-insert" {{ in_array('wall-insert', (array)request('categories', [])) ? 'checked' : '' }} class="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+<span class="text-sm text-gray-700 group-hover:text-gray-900">Настенная вставка</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input type="checkbox" name="categories[]" value="glass-special" {{ in_array('glass-special', (array)request('categories', [])) ? 'checked' : '' }} class="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+<span class="text-sm text-gray-700 group-hover:text-gray-900">Стеклянный спецэлемент</span>
                                   </label>
                               </div>
                           </div>
@@ -284,12 +296,12 @@
           window.location.href = url.toString();
       });
 
-      // Auto-submit form on filter change
-      document.querySelectorAll('.filter-checkbox, input[name="category"]').forEach(input => {
-          input.addEventListener('change', function() {
-              document.getElementById('filter-form').submit();
-          });
-      });
+                // Auto-submit form on filter change - работаем со всеми чекбоксами фильтров
+                document.querySelectorAll('#filter-form input[type="checkbox"]').forEach(input => {
+                    input.addEventListener('change', function() {
+                        document.getElementById('filter-form').submit();
+                    });
+                });
 
       // Auto-submit for price inputs on blur
       document.querySelectorAll('input[name="priceMin"], input[name="priceMax"]').forEach(input => {
