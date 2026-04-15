@@ -1,4 +1,4 @@
-export interface Product {
+export interface MockProduct {
   id: number
   sku: string
   name: string
@@ -139,7 +139,7 @@ export const collections: Collection[] = [
   { id: 81, name: "Concretehouse", slug: "concretehouse", image: "https://pvi.cersanit.ru/files/get/11/21690/29196/800/800/0/", product_count: 1 },
 ]
 
-export const products: Product[] = [
+export const mockProducts: MockProduct[] = [
   // ===== CALACATTA =====
   {
     id: 1,
