@@ -43,10 +43,18 @@ class Product extends Model
         return $query->where('is_active', true);
     }
 
+    public function scopeInStock($query)
+    {
+        return $query->where(function($q) {
+            $q->where('stock_yanino', '>', 0)
+              ->orWhere('stock_factory', '>', 0);
+        });
+    }
+
     // === МЕТОДЫ ДЛЯ SEO ===
     public function getCanonicalUrl(): string
     {
-        return route('catalog.show', $this->slug);
+        return route('product.show', $this->sku);
     }
 
     public function getSchemaOrgData(): array
@@ -57,6 +65,7 @@ class Product extends Model
             'name' => $this->name,
             'description' => $this->description ?? $this->seo_description ?? $this->name,
             'sku' => $this->sku,
+            'mpn' => $this->sku, // Required for Google Shopping
             'brand' => [
                 '@type' => 'Brand',
                 'name' => $this->brand ?? 'Cersanit'

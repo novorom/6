@@ -7,6 +7,8 @@ use App\Services\ReportParserService;
 use Illuminate\Http\Request;
 use App\Console\Commands\ImportProducts;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\SeoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +20,14 @@ use Illuminate\Support\Facades\Log;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// SEO & Feeds
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap.xml');
+Route::get('/sitemap-products.xml', [SeoController::class, 'productsSitemap'])->name('sitemap.products');
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
+Route::get('/google-shopping.xml', [SeoController::class, 'googleShopping'])->name('google.shopping');
+Route::get('/ai-feed.xml', [SeoController::class, 'aiFeed'])->name('seo.ai-feed');
+
 
 Route::get('/', function (ReportParserService $reportParserService) {
     $allProducts = collect($reportParserService->getProducts());
@@ -41,6 +51,17 @@ Route::get('/collections/{collection}', [CollectionController::class, 'show'])->
 // Catalog and product routes
 Route::get('/catalog', [ProductController::class, 'index'])->name('catalog.index');
 Route::get('/product/{sku}', [ProductController::class, 'show'])->name('product.show');
+
+// Cart routes
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/cart/order', [CartController::class, 'order'])->name('cart.order');
+Route::get('/order/success/{orderNumber}', [CartController::class, 'success'])->name('order.success');
+Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 
 // File upload for automatic parsing (to be implemented)
 Route::middleware(['auth'])->group(function () {

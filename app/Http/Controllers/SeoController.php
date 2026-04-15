@@ -39,7 +39,7 @@ class SeoController extends Controller
             // Товары
             foreach ($products as $product) {
                 $sitemap .= '<url>';
-                $sitemap .= '<loc>' . route('products.show', $product->slug) . '</loc>';
+                $sitemap .= '<loc>' . route('product.show', $product->sku) . '</loc>';
                 $sitemap .= '<lastmod>' . $product->updated_at->toAtomString() . '</lastmod>';
                 $sitemap .= '<changefreq>weekly</changefreq>';
                 
@@ -70,7 +70,7 @@ class SeoController extends Controller
         $robots .= "User-agent: *\n";
         $robots .= "Allow: /\n";
         $robots .= "Allow: /catalog\n";
-        $robots .= "Allow: /products/\n\n";
+        $robots .= "Allow: /product/\n\n";
         
         // Запрещаем служебные разделы
         $robots .= "# Служебные разделы\n";
@@ -87,12 +87,13 @@ class SeoController extends Controller
         $robots .= "User-agent: anthropic-ai\n";
         $robots .= "Allow: /\n";
         $robots .= "Allow: /catalog\n";
-        $robots .= "Allow: /products/\n";
+        $robots .= "Allow: /product/\n";
         $robots .= "Allow: /api/ai-feed\n\n";
         
         $robots .= "# Sitemap\n";
         $robots .= "Sitemap: " . route('sitemap.xml') . "\n";
         $robots .= "Sitemap: " . route('sitemap.products') . "\n";
+        $robots .= "Sitemap: " . route('google.shopping') . "\n";
         
         return response($robots, 200)
             ->header('Content-Type', 'text/plain');
@@ -115,7 +116,7 @@ class SeoController extends Controller
 
             foreach ($products as $product) {
                 $sitemap .= '<url>';
-                $sitemap .= '<loc>' . route('products.show', $product->slug) . '</loc>';
+                $sitemap .= '<loc>' . route('product.show', $product->sku) . '</loc>';
                 $sitemap .= '<lastmod>' . $product->updated_at->toAtomString() . '</lastmod>';
                 
                 // Добавляем изображения для Google Images
@@ -284,5 +285,49 @@ class SeoController extends Controller
         });
 
         return response()->json($data);
+    }
+
+    /**
+     * Google Shopping Feed (XML RSS 2.0)
+     */
+    public function googleShopping(): Response
+    {
+        $xml = Cache::remember('google_shopping_xml', 3600, function () {
+            $products = Product::active()
+                ->inStock()
+                ->get();
+
+            $rss = '<?xml version="1.0" encoding="UTF-8"?>';
+            $rss .= '<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">';
+            $rss .= '<channel>';
+            $rss .= '<title>Cersanit Shop - Плитка и керамогранит</title>';
+            $rss .= '<description>Официальный дилер Cersanit. Весь ассортимент в наличии на складе.</description>';
+            $rss .= '<link>' . route('home') . '</link>';
+
+            foreach ($products as $product) {
+                $rss .= '<item>';
+                $rss .= '<g:id>' . $product->id . '</g:id>';
+                $rss .= '<g:title>' . htmlspecialchars($product->name) . '</g:title>';
+                $rss .= '<g:description>' . htmlspecialchars($product->seo_description ?? $product->name) . '</g:description>';
+                $rss .= '<g:link>' . route('product.show', $product->sku) . '</g:link>';
+                $rss .= '<g:image_link>' . asset($product->main_image) . '</g:image_link>';
+                $rss .= '<g:brand>Cersanit</g:brand>';
+                $rss .= '<g:condition>new</g:condition>';
+                $rss .= '<g:availability>in_stock</g:availability>';
+                $rss .= '<g:price>' . $product->price_retail . ' RUB</g:price>';
+                $rss .= '<g:google_product_category>536</g:google_product_category>';
+                $rss .= '<g:mpn>' . $product->sku . '</g:mpn>';
+                $rss .= '<g:identifier_exists>no</g:identifier_exists>';
+                $rss .= '</item>';
+            }
+
+            $rss .= '</channel>';
+            $rss .= '</rss>';
+
+            return $rss;
+        });
+
+        return response($xml, 200)
+            ->header('Content-Type', 'application/xml');
     }
 }
