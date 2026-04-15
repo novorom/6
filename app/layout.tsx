@@ -12,15 +12,55 @@ const SITE_URL = "https://cersanit-spb.ru"
 
 export const metadata: Metadata = {
   title: {
-    default: "Cersanit СПб — Официальный дилер плитки и керамогранита",
-    template: "%s | Cersanit Shop",
+    default: "Дом Плитки Cersanit СПб — официальный дилер, склад в Янино",
+    template: "%s | Дом Плитки Cersanit СПб",
   },
   description:
-    "Магазин керамической плитки Cersanit в Санкт-Петербурге. Весь ассортимент в наличии на складе в Янино. Быстрая доставка и профессиональный расчет.",
+    "Официальный дилер Cersanit в Санкт-Петербурге. Керамическая плитка и керамогранит от 750 ₽/м². 200+ моделей в наличии на складе в Янино. Доставка по СПб и ЛО от 1 дня.",
   metadataBase: new URL(SITE_URL),
+  applicationName: "Дом Плитки Cersanit СПб",
+  keywords: [
+    "плитка Cersanit СПб",
+    "купить керамогранит Санкт-Петербург",
+    "плитка Церсанит Янино",
+    "официальный дилер Cersanit",
+    "керамическая плитка под дерево СПб",
+    "плитка для ванной СПб",
+  ],
   robots: { index: true, follow: true },
+  alternates: {
+    canonical: SITE_URL,
+  },
+  openGraph: {
+    title: "Дом Плитки Cersanit СПб — официальный дилер, склад в Янино",
+    description:
+      "Керамическая плитка и керамогранит Cersanit с доставкой по Санкт-Петербургу. 200+ моделей в наличии. Официальный дилер.",
+    url: SITE_URL,
+    siteName: "Дом Плитки CERSANIT",
+    locale: "ru_RU",
+    type: "website",
+    images: [
+      {
+        url: `${SITE_URL}/og-image.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Дом Плитки Cersanit — официальный дилер в Санкт-Петербурге",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Дом Плитки Cersanit СПб",
+    description: "Официальный дилер Cersanit в СПб. Склад в Янино. 200+ товаров в наличии.",
+    images: [`${SITE_URL}/og-image.jpg`],
+  },
   other: {
     "yandex-verification": "1f85757551ab6b60",
+    // Geo-метатеги для Яндекса (определение региона)
+    "geo.region": "RU-SPE",
+    "geo.placename": "Санкт-Петербург",
+    "geo.position": "59.9311;30.3609",
+    "ICBM": "59.9311, 30.3609",
   },
 }
 
@@ -28,19 +68,69 @@ export const viewport: Viewport = {
   themeColor: "#1e3a5f",
 }
 
-const organizationJsonLd = {
+// LocalBusiness вместо Organization — более конкретный тип для Яндекса/Google
+const localBusinessJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Cersanit Shop СПб",
+  "@type": "HomeGoodsStore",
+  "@id": `${SITE_URL}/#business`,
+  name: "Дом Плитки CERSANIT",
+  alternateName: "Cersanit-SPb",
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
+  image: `${SITE_URL}/og-image.jpg`,
+  description:
+    "Официальный дилер керамической плитки и керамогранита Cersanit в Санкт-Петербурге. Склад в Янино-1. Доставка по СПб и ЛО от 1 дня.",
+  telephone: "+7-905-205-09-00",
+  email: "info@cersanit-spb.ru",
+  priceRange: "₽₽",
+  currenciesAccepted: "RUB",
+  paymentAccepted: "Наличные, банковская карта, безналичный расчёт",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Заводская улица, 37",
+    addressLocality: "Янино-1",
+    addressRegion: "Ленинградская область",
+    postalCode: "188661",
+    addressCountry: "RU",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 59.9311,
+    longitude: 30.3609,
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "10:00",
+      closes: "16:45",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Saturday", "Sunday"],
+      opens: "10:00",
+      closes: "18:00",
+    },
+  ],
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+7 (905) 205-09-00",
+    telephone: "+7-905-205-09-00",
     contactType: "sales",
-    areaServed: "RU",
-    availableLanguage: "Russian"
-  }
+    areaServed: ["Санкт-Петербург", "Ленинградская область"],
+    availableLanguage: "Russian",
+    contactOption: "TollFree",
+  },
+  sameAs: [
+    "https://yandex.ru/maps/-/CDn892w",
+    "https://2gis.ru/spb",
+    "https://zoon.ru/spb/building/internet-magazin_cersanit-spb/",
+    "https://cersanit.ru/dealers/",
+  ],
+  hasMap: "https://yandex.ru/maps/-/CDn892w",
+  areaServed: {
+    "@type": "State",
+    name: "Санкт-Петербург и Ленинградская область",
+  },
 }
 
 export default function RootLayout({
@@ -51,7 +141,10 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <head>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        />
       </head>
       <body className={`${inter.className} antialiased`}>
         <ProductsProvider>

@@ -99,20 +99,60 @@ export default async function ProductPage({
       ? `${collectionSeo.about} ${collectionSeo.application}`
       : `${product.name} — керамическая плитка и керамогранит Cersanit. Купить в Санкт-Петербурге на складе Янино.`,
     sku: product.sku,
+    mpn: product.bsu,
     brand: { "@type": "Brand", name: "Cersanit" },
     image: product.main_image ? [product.main_image] : [],
+    itemCondition: "https://schema.org/NewCondition",
     offers: {
       "@type": "Offer",
       price: product.price_retail,
       priceCurrency: "RUB",
-      availability: "https://schema.org/InStock",
-      seller: { "@type": "Organization", name: "Дом Плитки CERSANIT" },
+      availability:
+        (product.stock_yanino ?? 0) > 0 || (product.stock_factory ?? 0) > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/PreOrder",
+      seller: {
+        "@type": "Organization",
+        name: "Дом Плитки CERSANIT",
+        url: SITE_URL,
+      },
       url: `${SITE_URL}/catalog/${product.slug}`,
       areaServed: "Санкт-Петербург и Ленинградская область",
       priceValidUntil: "2026-12-31",
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          value: "0",
+          currency: "RUB",
+        },
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry: "RU",
+          addressRegion: ["Санкт-Петербург", "Ленинградская область"],
+        },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: {
+            "@type": "QuantitativeValue",
+            minValue: 0,
+            maxValue: 1,
+            unitCode: "DAY",
+          },
+          transitTime: {
+            "@type": "QuantitativeValue",
+            minValue: 1,
+            maxValue: 2,
+            unitCode: "DAY",
+          },
+        },
+      },
     },
     ...(product.color ? { color: product.color } : {}),
     ...(product.material_type ? { material: product.material_type } : {}),
+    ...(product.width && product.length
+      ? { width: { "@type": "QuantitativeValue", value: parseFloat(product.width), unitCode: "CMT" } }
+      : {}),
   }
 
   const breadcrumbSchema = {

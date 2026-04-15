@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
+        allow: ["/", "/llms.txt"],
         disallow: ["/admin/", "/api/", "/cart", "/*.json$", "/checkout"],
       },
       {
@@ -30,9 +30,19 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "Bytespider", allow: "/" },
       { userAgent: "anthropic-ai", allow: "/" },
       { userAgent: "cohere-ai", allow: "/" },
+      // Яндекс ИИ (Алиса, YandexGPT)
+      { userAgent: "YandexBot", allow: "/" },
+      { userAgent: "YandexImages", allow: "/" },
+      { userAgent: "AliceSuggestion", allow: "/" },
+      // Meta AI
+      { userAgent: "Meta-ExternalAgent", allow: "/" },
+      { userAgent: "Meta-ExternalFetcher", allow: "/" },
+      // Other AI crawlers
+      { userAgent: "CCBot", allow: "/" },
+      { userAgent: "FacebookBot", allow: "/" },
+      { userAgent: "Diffbot", allow: "/" },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
-    // llms.txt: `${SITE_URL}/llms.txt`,
     host: SITE_URL,
   }
 }

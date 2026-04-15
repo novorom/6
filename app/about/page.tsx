@@ -1,17 +1,33 @@
 import Link from 'next/link'
 import { ExternalLink, Award, MapPin, Package } from 'lucide-react'
 
+const SITE_URL = 'https://cersanit-spb.ru'
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Главная", item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "О компании", item: `${SITE_URL}/about` },
+  ],
+}
+
 export const metadata = {
-  title: 'О компании Дом Плитки -- магазин Cersanit в СПб с 2011 года',
-  description: 'С 2011 года на рынке керамической плитки в Санкт-Петербурге — уже 15 лет. Склад и шоурум в Янино. 10+ производителей-партнёров. Отзывы на Avito.',
+  title: 'О компании Дом Плитки — официальный дилер Cersanit в СПб с 2011 года',
+  description: 'С 2011 года на рынке керамической плитки в Санкт-Петербурге — уже 15 лет. Официальный дилер Cersanit. Склад и шоурум в Янино-1. Телефон: +7 (905) 205-09-00.',
   alternates: { canonical: 'https://cersanit-spb.ru/about' },
   openGraph: {
-    title: 'О компании Дом Плитки -- магазин Cersanit в СПб',
+    title: 'О компании Дом Плитки — официальный дилер Cersanit в СПб',
     description: 'С 2011 года на рынке керамической плитки в Санкт-Петербурге — уже 15 лет. Склад и шоурум в Янино.',
+    url: 'https://cersanit-spb.ru/about',
+    siteName: 'Дом Плитки CERSANIT',
+    locale: 'ru_RU',
+    type: 'website',
   },
 }
 
 export default function AboutPage() {
+  const jsonLd = breadcrumbSchema
   const manufacturers = [
     { name: 'Cersanit', country: 'Польша' },
     { name: 'Шахтинская плитка (GraciaCeramica)', country: 'Россия' },
@@ -27,6 +43,7 @@ export default function AboutPage() {
 
   return (
     <main className="min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {/* Breadcrumb */}
       <div className="bg-background border-b border-border">
         <div className="container max-w-6xl mx-auto px-4 py-4">
@@ -169,11 +186,16 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 lg:p-12 border border-primary/20 h-full min-h-96 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="w-16 h-16 text-primary mx-auto mb-4 opacity-50" />
-                <p className="text-muted-foreground">Карта местоположения</p>
-              </div>
+            <div className="rounded-2xl overflow-hidden border border-primary/20 h-full min-h-96">
+              <iframe
+                src="https://yandex.ru/map-widget/v1/?um=constructor%3A15f73d9cde69a1b0f7e5bde18a8baee70c66c2e28d70cdd32f41f6d0e2f3c55&amp;source=constructor"
+                width="100%"
+                height="400"
+                frameBorder="0"
+                title="Склад Дом Плитки CERSANIT в Янино — Яндекс Карты"
+                allowFullScreen
+                loading="lazy"
+              />
             </div>
           </div>
         </div>
