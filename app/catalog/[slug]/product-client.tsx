@@ -262,24 +262,7 @@ export function ProductPageClient({ slug }: { slug: string }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      {/* Breadcrumbs */}
-      <div className="bg-background border-b border-border">
-        <div className="mx-auto max-w-7xl px-4 py-3">
-          <nav className="flex items-center gap-1.5 text-sm flex-wrap" aria-label="Breadcrumb">
-            <Link href="/" className="text-muted-foreground hover:text-primary transition-colors">
-              Главная
-            </Link>
-            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
-            <Link href="/catalog" className="text-muted-foreground hover:text-primary transition-colors">
-              Каталог
-            </Link>
-            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
-            <span className="text-foreground font-medium line-clamp-1">{product.name}</span>
-          </nav>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-7xl px-4 py-6 lg:py-8">
+      <div className="mx-auto max-w-7xl px-4 py-3 lg:py-6">
         {/* Product top section */}
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Gallery */}
