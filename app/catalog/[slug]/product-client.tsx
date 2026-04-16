@@ -636,6 +636,48 @@ export function ProductPageClient({ slug }: { slug: string }) {
           </div>
         </div>
 
+        {/* ── ТОВАРЫ ЭТОЙ КОЛЛЕКЦИИ (CRO-блок) ── */}
+        {product.collection && (
+          <div className="mt-12 lg:mt-16 border-t border-border pt-12">
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <h2 className="text-xl lg:text-2xl font-bold text-foreground">
+                  Другие товары из коллекции {product.collection}
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Создайте единый стиль в интерьере с помощью элементов одной серии
+                </p>
+              </div>
+              <Link
+                href={`/collections/${toCollectionSlug(product.collection)}`}
+                className="hidden sm:flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+              >
+                Вся коллекция
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+            
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+              {products
+                .filter((p) => p.collection === product.collection && p.id !== product.id)
+                .slice(0, 8)
+                .map((relatedProduct) => (
+                  <ProductCard key={relatedProduct.id} product={relatedProduct} />
+                ))}
+            </div>
+
+            <div className="mt-8 sm:hidden">
+              <Link
+                href={`/collections/${toCollectionSlug(product.collection)}`}
+                className="flex items-center justify-center gap-1 text-sm font-medium text-primary hover:underline"
+              >
+                Посмотреть всю коллекцию {product.collection}
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        )}
+
         {/* Related products */}
         {relatedProducts.length > 0 && (
           <div className="mt-8 lg:mt-12 pb-8">
