@@ -4,9 +4,9 @@ import { products } from "@/lib/products-data"
 const SITE_URL = "https://cersanit-spb.ru"
 
 // Дата последнего обновления прайса и каталога
-const CATALOG_UPDATED = "2026-04-15"
+const CATALOG_UPDATED = "2026-04-16"
 // Дата последней правки статичных страниц сайта
-const SITE_UPDATED = "2026-04-15"
+const SITE_UPDATED = "2026-04-16"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Static pages — реальные даты последнего изменения, НЕ динамические

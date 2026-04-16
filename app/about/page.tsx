@@ -63,7 +63,7 @@ export default function AboutPage() {
               О нашей компании
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              С 2011 года (15 лет) на рынке керамической плитки и керамогранита. Мы помогаем тысячам клиентов найти идеальное решение для их проектов.
+              С 2011 года (15 лет) на рынке керамической плитки и керамогранита. Мы помогаем тысячам клиентов найти идеальное решение для их проектов. Являясь официальным дилером Cersanit в Санкт-Петербурге, мы обеспечиваем прямые поставки продукции с заводов, гарантируя оригинальное качество и конкурентные цены.
             </p>
           </div>
         </div>
@@ -157,8 +157,50 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Features Section */}
+      <section className="py-16 lg:py-24">
+        <div className="container max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary mb-2">200+</div>
+              <p className="text-sm text-muted-foreground">Моделей плитки в наличии на складе</p>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary mb-2">15 лет</div>
+              <p className="text-sm text-muted-foreground">Опыта работы на рынке СПб и ЛО</p>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary mb-2">24 часа</div>
+              <p className="text-sm text-muted-foreground">Среднее время доставки по городу</p>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary mb-2">0 руб</div>
+              <p className="text-sm text-muted-foreground">Бесплатный самовывоз со склада</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Detail Content Section */}
+      <section className="py-16 lg:py-24 bg-muted/20">
+        <div className="container max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8 text-center italic">Почему выбирают официального дилера Cersanit?</h2>
+          <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
+            <p>
+              В нашем интернет-магазине представлен полный каталог продукции Cersanit: от классической керамической плитки для ванной до современных крупноформатных коллекций керамогранита 60х120 см. Мы тщательно отбираем коллекции, ориентируясь на актуальные тренды дизайна интерьеров 2025-2026 годов.
+            </p>
+            <p>
+              Наличие собственного склада в Янино-1 позволяет нам поддерживать постоянный запас популярных позиций. Это значит, что вам не нужно ждать доставки месяц — большинство заказов готовы к отгрузке или самовывозу уже на следующий рабочий день. На складе работает бригада профессиональных грузчиков, которые бесплатно загрузят ваш товар.
+            </p>
+            <p>
+              Мы работаем как с розничными покупателями, так и с дизайнерами и строительными компаниями. Для каждого клиента мы предлагаем индивидуальный подход и профессиональный расчет необходимого количества материала, учитывая особенности раскладки и запаса на подрезку.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Location Section */}
-      <section className="py-16 lg:py-24 bg-muted/30">
+      <section className="py-16 lg:py-24">
         <div className="container max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -169,18 +211,18 @@ export default function AboutPage() {
                 <div className="flex gap-4">
                   <MapPin className="w-6 h-6 text-primary shrink-0 mt-1" />
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">Местоположение</h3>
+                    <h3 className="font-semibold text-foreground mb-2">Адрес и проезд</h3>
                     <p className="text-muted-foreground">
-                      Большой склад и просторный шоурум находятся в Янино, что позволяет нам предложить вам удобный самовывоз и быструю доставку.
+                      Санкт-Петербург, пос. Янино-1, Заводская улица, 37. Мы находимся в непосредственной близости от КАД, что обеспечивает удобный подъезд для любого транспорта.
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <Package className="w-6 h-6 text-primary shrink-0 mt-1" />
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">Услуги доставки</h3>
+                    <h3 className="font-semibold text-foreground mb-2">Услуги доставки и загрузки</h3>
                     <p className="text-muted-foreground">
-                      Мы предлагаем удобные варианты доставки и самовывоза. При самовывозе со склада в Янино наша команда загружает плитку своими силами в ваш транспорт.
+                      Наша служба доставки работает по всему Санкт-Петербургу и Ленинградской области. При самовывозе со склада в Янино мы осуществляем бесплатную механизированную или ручную загрузку в ваш автомобиль.
                     </p>
                   </div>
                 </div>

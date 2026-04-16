@@ -291,8 +291,8 @@ export default function ContactsPage() {
                 Санкт-Петербург, Янино
               </p>
               <p className="text-sm text-muted-foreground">
-                Пн-Пт: с 10:00 до 16:45<br />
-                Сб-Вс: выходной
+                Офис/Склад: Пн-Пт 10:00-16:45<br />
+                Шоурум: ежедневно 10:00-18:00
               </p>
             </div>
 
@@ -303,8 +303,8 @@ export default function ContactsPage() {
                 Самовывоз и доставка
               </p>
               <p className="text-sm text-muted-foreground">
-                Пн-Пт: с 10:00 до 16:45<br />
-                Сб-Вс: выходной
+                Офис/Склад: Пн-Пт 10:00-16:45<br />
+                Шоурум: ежедневно 10:00-18:00
               </p>
             </div>
           </div>
