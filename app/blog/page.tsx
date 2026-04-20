@@ -39,6 +39,7 @@ const articles = [
   { href: "/blog/plitka-dlya-doma-chastnogo", title: "Плитка для частного дома: что выбрать для каждой комнаты", desc: "Читайте на нашем сайте.", date: "2026-03-30", time: "5 мин" },
   { href: "/blog/kak-ukladyvat-keramogranit-elochkoy", title: "Укладка керамогранита ёлочкой и диагональю: пошаговая инструкция", desc: "Читайте на нашем сайте.", date: "2026-04-06", time: "5 мин" },
   { href: "/blog/kak-vybrat-keramogranit-dlya-pola", title: "Как выбрать керамогранит для пола: полный гид покупателя 2026", desc: "Читайте на нашем сайте.", date: "2026-04-13", time: "5 мин" },
+  { href: "/blog/mozaika-v-vannoj-dizajn-idei", title: "Мозаика в ванной: идеи дизайна и советы по укладке", desc: "Читайте на нашем сайте.", date: "2026-04-20", time: "5 мин" },
 ]
 
 export default function BlogIndex() {
