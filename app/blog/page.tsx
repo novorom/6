@@ -43,6 +43,7 @@ const articles = [
   { href: "/blog/plitka-v-stile-skandinavskogo-dizajna", title: "Плитка в скандинавском стиле: светлая, матовая, минималистичная", desc: "Читайте на нашем сайте.", date: "2026-04-27", time: "5 мин" },
   { href: "/blog/kak-rasschitat-kolichestvo-kleya-dlya-plitki", title: "Как рассчитать количество клея для плитки и керамогранита", desc: "Читайте на нашем сайте.", date: "2026-05-04", time: "5 мин" },
   { href: "/blog/plitka-na-kuhne-fartuk-idei", title: "Плитка на кухне: 10 идей для фартука в 2026 году", desc: "Читайте на нашем сайте.", date: "2026-05-11", time: "5 мин" },
+  { href: "/blog/krupnoformatnaya-plitka-60x120-preimushchestva", title: "Крупноформатная плитка 60x120: преимущества и особенности укладки", desc: "Читайте на нашем сайте.", date: "2026-05-18", time: "5 мин" },
 ]
 
 export default function BlogIndex() {
