@@ -45,6 +45,7 @@ const articles = [
   { href: "/blog/plitka-na-kuhne-fartuk-idei", title: "Плитка на кухне: 10 идей для фартука в 2026 году", desc: "Читайте на нашем сайте.", date: "2026-05-11", time: "5 мин" },
   { href: "/blog/krupnoformatnaya-plitka-60x120-preimushchestva", title: "Крупноформатная плитка 60x120: преимущества и особенности укладки", desc: "Читайте на нашем сайте.", date: "2026-05-18", time: "5 мин" },
   { href: "/blog/kak-ukhozhat-za-mozoaika", title: "Как ухаживать за мозаикой в ванной: советы по чистке", desc: "Читайте на нашем сайте.", date: "2026-05-25", time: "5 мин" },
+  { href: "/blog/plitka-dlya-malenkoj-vannoj", title: "Плитка для маленькой ванной: как визуально увеличить пространство", desc: "Читайте на нашем сайте.", date: "2026-06-01", time: "5 мин" },
 ]
 
 export default function BlogIndex() {
