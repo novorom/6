@@ -55,6 +55,7 @@ const articles = [
   { href: "/blog/plitka-v-spalne-na-pole", title: "Плитка в спальне вместо ламината: плюсы и минусы", desc: "Читайте на нашем сайте.", date: "2026-07-20", time: "5 мин" },
   { href: "/blog/gde-kupit-plitku-v-spb-nedorogo", title: "Где купить плитку в Санкт-Петербурге недорого: советы покупателю", desc: "Читайте на нашем сайте.", date: "2026-07-27", time: "5 мин" },
   { href: "/blog/plitka-cersanit-otzyvy-pokupatelej", title: "Плитка Cersanit: отзывы покупателей и опыт использования", desc: "Читайте на нашем сайте.", date: "2026-08-03", time: "5 мин" },
+  { href: "/blog/plitka-dlya-vannoy-bez-dizajnera", title: "Плитка для ванной без дизайнера: как не ошибиться с выбором", desc: "Читайте на нашем сайте.", date: "2026-08-10", time: "5 мин" },
 ]
 
 export default function BlogIndex() {

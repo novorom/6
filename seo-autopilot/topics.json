@@ -721,7 +721,7 @@
           "price": "1098"
         }
       ],
-      "used": false,
+      "used": true,
       "related_landings": [
         "/plitka-dlya-vannoj-spb",
         "/plitka-nastennaya-spb",
