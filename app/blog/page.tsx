@@ -57,6 +57,7 @@ const articles = [
   { href: "/blog/plitka-cersanit-otzyvy-pokupatelej", title: "Плитка Cersanit: отзывы покупателей и опыт использования", desc: "Читайте на нашем сайте.", date: "2026-08-03", time: "5 мин" },
   { href: "/blog/plitka-dlya-vannoy-bez-dizajnera", title: "Плитка для ванной без дизайнера: как не ошибиться с выбором", desc: "Читайте на нашем сайте.", date: "2026-08-10", time: "5 мин" },
   { href: "/blog/plitka-pod-kamen-v-interere", title: "Плитка под камень в интерьере: природный стиль без природного камня", desc: "Читайте на нашем сайте.", date: "2026-08-17", time: "5 мин" },
+  { href: "/blog/plitka-bejzevaya-v-interere", title: "Бежевая плитка в интерьере: тепло и уют в каждой комнате", desc: "Читайте на нашем сайте.", date: "2026-08-24", time: "5 мин" },
 ]
 
 export default function BlogIndex() {
