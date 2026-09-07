@@ -59,6 +59,7 @@ const articles = [
   { href: "/blog/plitka-pod-kamen-v-interere", title: "Плитка под камень в интерьере: природный стиль без природного камня", desc: "Читайте на нашем сайте.", date: "2026-08-17", time: "5 мин" },
   { href: "/blog/plitka-bejzevaya-v-interere", title: "Бежевая плитка в интерьере: тепло и уют в каждой комнате", desc: "Читайте на нашем сайте.", date: "2026-08-24", time: "5 мин" },
   { href: "/blog/kak-vybrat-format-plitki-dlya-komnaty", title: "Как выбрать формат плитки для комнаты: полное руководство", desc: "Читайте на нашем сайте.", date: "2026-08-31", time: "5 мин" },
+  { href: "/blog/plitka-dlya-balkona-bez-otopleniya", title: "Плитка для балкона без отопления: морозостойкость и надёжность", desc: "Читайте на нашем сайте.", date: "2026-09-07", time: "5 мин" },
 ]
 
 export default function BlogIndex() {
