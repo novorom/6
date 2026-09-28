@@ -62,6 +62,7 @@ const articles = [
   { href: "/blog/plitka-dlya-balkona-bez-otopleniya", title: "Плитка для балкона без отопления: морозостойкость и надёжность", desc: "Читайте на нашем сайте.", date: "2026-09-07", time: "5 мин" },
   { href: "/blog/kak-sdelat-accent-stenu-iz-plitki", title: "Акцентная стена из плитки: как выделить зону без ремонта всей комнаты", desc: "Читайте на нашем сайте.", date: "2026-09-14", time: "5 мин" },
   { href: "/blog/plitka-v-tualete-malaya-ploshhad", title: "Плитка в туалете: как оформить маленькое пространство стильно", desc: "Читайте на нашем сайте.", date: "2026-09-21", time: "5 мин" },
+  { href: "/blog/antiskolzyashhaya-plitka-dlya-doma", title: "Нескользкая плитка для дома: безопасность на полу в ванной и прихожей", desc: "Читайте на нашем сайте.", date: "2026-09-28", time: "5 мин" },
 ]
 
 export default function BlogIndex() {
