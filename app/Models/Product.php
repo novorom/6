@@ -76,9 +76,14 @@ class Product extends Model
                 'priceCurrency' => 'RUB',
                 'price' => $this->price_retail,
                 'itemCondition' => 'https://schema.org/NewCondition',
-                'availability' => ($this->stock_yanino + $this->stock_factory) > 0 
-                    ? 'https://schema.org/InStock' 
-                    : 'https://schema.org/OutOfStock',
+                // Only stock at the local warehouse is immediately available.
+                // Factory stock requires a separate confirmation and must not
+                // be presented to search engines as physically in stock.
+                'availability' => ($this->stock_yanino ?? 0) > 0
+                    ? 'https://schema.org/InStock'
+                    : (($this->stock_factory ?? 0) > 0
+                        ? 'https://schema.org/PreOrder'
+                        : 'https://schema.org/OutOfStock'),
             ]
         ];
     }

@@ -170,8 +170,8 @@ export default function AboutPage() {
               <p className="text-sm text-muted-foreground">Опыта работы на рынке СПб и ЛО</p>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-primary mb-2">24 часа</div>
-              <p className="text-sm text-muted-foreground">Среднее время доставки по городу</p>
+              <div className="text-2xl font-bold text-primary mb-2">По согласованию</div>
+              <p className="text-sm text-muted-foreground">Срок и стоимость доставки уточняются по адресу и заказу</p>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-primary mb-2">0 руб</div>
