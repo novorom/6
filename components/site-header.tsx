@@ -10,7 +10,7 @@ import { useCart } from "@/lib/cart-context"
 
 const navLinks = [
   { href: "/catalog", label: "Каталог" },
-  { href: "/stroy", label: "Для строителей" },
+  { href: "/stroy", label: "Строителям" },
   { href: "/collections", label: "Коллекции" },
   { href: "/blog", label: "Блог" },
   { href: "/delivery", label: "Доставка" },
@@ -78,7 +78,7 @@ export function SiteHeader() {
             <Link
               key={link.label}
               href={link.href}
-              className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-primary/5"
+              className={`px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-primary/5 ${link.href === "/stroy" ? "whitespace-nowrap shrink-0" : ""}`}
             >
               {link.label}
             </Link>
