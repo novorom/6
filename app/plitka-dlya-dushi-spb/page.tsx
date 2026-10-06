@@ -70,7 +70,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl px-4">
           <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-balance">Плитка для душевой кабины в Санкт-Петербурге</h1>
           <p className="mt-4 text-primary-foreground/80 text-lg leading-relaxed max-w-3xl">
-            {filteredProducts.length} позиций в наличии на складе в Янино. Официальный дилер Cersanit в Санкт-Петербурге.
+            {filteredProducts.length} товаров в подборке. Проверьте остаток в карточке каждого товара.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="#products" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-background text-foreground font-medium text-sm hover:bg-background/90 transition-colors">
@@ -86,7 +86,7 @@ export default function LandingPage() {
       <section id="products" className="py-12 lg:py-16">
         <div className="mx-auto max-w-7xl px-4">
           <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">Плитка для душа — {filteredProducts.length} позиций</h2>
-          <p className="text-muted-foreground mb-8">Все товары в наличии на складе Янино</p>
+          <p className="text-muted-foreground mb-8">Проверьте фактический остаток в карточке товара</p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
             {filteredProducts.map((product: any, index: number) => (
               <ProductCard key={product.id} product={product} priority={index < 4} />

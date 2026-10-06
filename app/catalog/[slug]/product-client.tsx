@@ -20,6 +20,7 @@ import { InteriorPhotos } from "@/components/interior-photos"
 import { ProductCard } from "@/components/product-card"
 import { useCart } from "@/lib/cart-context"
 import { useProducts } from "@/lib/products-context"
+import type { Product } from "@/lib/products-data"
 import { QuickBuyModal } from "@/components/quick-buy-modal"
 
 // Релевантные статьи блога для разных типов плитки
@@ -77,11 +78,11 @@ function toCollectionSlug(name: string): string {
   return name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-zа-яё0-9-]/gi, "")
 }
 
-export function ProductPageClient({ slug }: { slug: string }) {
+export function ProductPageClient({ slug, initialProduct }: { slug: string; initialProduct: Product }) {
   const router = useRouter()
   const { addItem } = useCart()
   const { products } = useProducts()
-  const product = products.find((p) => p.slug === slug) || products[0]
+  const product = products.find((p) => p.slug === slug) || initialProduct
   const [isQuickBuyOpen, setIsQuickBuyOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<TabId>("description")
 
@@ -136,93 +137,6 @@ export function ProductPageClient({ slug }: { slug: string }) {
   const hasDiscount = product.price_official && product.price_official > product.price_retail
   const priceUnit = ["Мозаика", "Ступень", "Плинтус", "Вставка", "Панно"].includes(product.product_type) ? "₽/шт" : "₽/м²"
 
-  const productJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    image: product.images || [],
-    description:
-      product.description ||
-      `${product.name} — купить в Санкт-Петербурге со склада Янино. ${product.brand} коллекция ${product.collection}. Доставка по СПб и ЛО.`,
-    brand: { "@type": "Brand", name: product.brand },
-    sku: product.sku,
-    category: product.product_type,
-    color: product.color,
-    material: product.material_type,
-    offers: {
-      "@type": "Offer",
-      url: `https://cersanit-spb.ru/catalog/${product.slug}`,
-      priceCurrency: "RUB",
-      price: product.price_retail,
-      availability:
-        totalStock > 0
-          ? "https://schema.org/InStock"
-          : "https://schema.org/PreOrder",
-      seller: { "@type": "Organization", name: "Дом Плитки CERSANIT" },
-      areaServed: { "@type": "City", name: "Санкт-Петербург" },
-      deliveryLeadTime: {
-        "@type": "QuantitativeValue",
-        minValue: 1,
-        maxValue: 2,
-        unitCode: "DAY",
-      },
-      shippingDetails: {
-        "@type": "OfferShippingDetails",
-        shippingRate: {
-          "@type": "MonetaryAmount",
-          value: "0",
-          currency: "RUB",
-        },
-        shippingDestination: {
-          "@type": "DefinedRegion",
-          addressCountry: "RU",
-          addressRegion: "Санкт-Петербург",
-        },
-        deliveryTime: {
-          "@type": "ShippingDeliveryTime",
-          handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" },
-          transitTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 2, unitCode: "DAY" },
-        },
-      },
-    },
-    hasMerchantReturnPolicy: {
-      "@type": "MerchantReturnPolicy",
-      applicableCountry: "RU",
-      returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
-      merchantReturnDays: 14,
-      returnMethod: "https://schema.org/ReturnByMail",
-    },
-    additionalProperty: [
-      product.format && { "@type": "PropertyValue", name: "Формат", value: product.format },
-      product.surface && { "@type": "PropertyValue", name: "Поверхность", value: product.surface },
-      product.rectified && { "@type": "PropertyValue", name: "Ректификат", value: "Да" },
-      product.frost_resistant && { "@type": "PropertyValue", name: "Морозостойкость", value: "Да" },
-      product.wear_class && { "@type": "PropertyValue", name: "Класс износостойкости", value: product.wear_class },
-      product.slip_class && { "@type": "PropertyValue", name: "Класс антискольжения", value: product.slip_class },
-    ].filter(Boolean),
-    ...(product.rating && product.rating > 0
-      ? {
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: String(product.rating),
-            reviewCount: String(product.reviews_count || 1),
-            bestRating: "5",
-            worstRating: "1",
-          },
-        }
-      : {}),
-  }
-
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Главная", item: "https://cersanit-spb.ru" },
-      { "@type": "ListItem", position: 2, name: "Каталог", item: "https://cersanit-spb.ru/catalog" },
-      { "@type": "ListItem", position: 3, name: product.name, item: `https://cersanit-spb.ru/catalog/${product.slug}` },
-    ],
-  }
-
   const tabs: { id: TabId; label: string }[] = [
     { id: "description", label: "Описание" },
     { id: "specs", label: "Характеристики" },
@@ -253,15 +167,6 @@ export function ProductPageClient({ slug }: { slug: string }) {
   return (
     <>
     <div className="bg-muted/30 min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
-
       <div className="mx-auto max-w-7xl px-4 py-3 lg:py-6">
         {/* Product top section */}
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">

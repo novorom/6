@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | Дом Плитки Cersanit СПб",
   },
   description:
-    "Официальный дилер Cersanit в Санкт-Петербурге. Керамическая плитка и керамогранит от 750 ₽/м². 200+ моделей в наличии на складе в Янино. Доставка по СПб и ЛО от 1 дня.",
+    "Каталог керамической плитки, керамогранита и декоров Cersanit в Санкт-Петербурге. Цены, характеристики и актуальное наличие указаны в карточках товаров. Склад в Янино, доставка и самовывоз по согласованию.",
   metadataBase: new URL(SITE_URL),
   applicationName: "Дом Плитки Cersanit СПб",
   keywords: [
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Дом Плитки Cersanit СПб — официальный дилер, склад в Янино",
     description:
-      "Керамическая плитка и керамогранит Cersanit с доставкой по Санкт-Петербургу. 200+ моделей в наличии. Официальный дилер.",
+      "Каталог плитки и керамогранита Cersanit в Санкт-Петербурге. Проверяйте цену и актуальное наличие в карточке товара.",
     url: SITE_URL,
     siteName: "Дом Плитки CERSANIT",
     locale: "ru_RU",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Дом Плитки Cersanit СПб",
-    description: "Официальный дилер Cersanit в СПб. Склад в Янино. 200+ товаров в наличии.",
+    description: "Каталог плитки и керамогранита Cersanit в Санкт-Петербурге. Цены и наличие — в карточках товаров.",
     images: [`${SITE_URL}/og-image.jpg`],
   },
   other: {

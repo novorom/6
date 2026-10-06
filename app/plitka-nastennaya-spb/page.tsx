@@ -70,7 +70,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl px-4">
           <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-balance">Настенная плитка Cersanit в Санкт-Петербурге</h1>
           <p className="mt-4 text-primary-foreground/80 text-lg leading-relaxed max-w-3xl">
-            {filteredProducts.length} позиций в наличии на складе в Янино. Официальный дилер Cersanit в Санкт-Петербурге.
+            {filteredProducts.length} товаров в подборке. Проверьте остаток в карточке каждого товара.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="#products" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-background text-foreground font-medium text-sm hover:bg-background/90 transition-colors">
@@ -86,7 +86,7 @@ export default function LandingPage() {
       <section id="products" className="py-12 lg:py-16">
         <div className="mx-auto max-w-7xl px-4">
           <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">Настенная плитка — {filteredProducts.length} позиций</h2>
-          <p className="text-muted-foreground mb-8">Все товары в наличии на складе Янино</p>
+          <p className="text-muted-foreground mb-8">Проверьте фактический остаток в карточке товара</p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
             {filteredProducts.map((product: any, index: number) => (
               <ProductCard key={product.id} product={product} priority={index < 4} />
@@ -107,7 +107,7 @@ export default function LandingPage() {
           </div>
           <div>
             <h2 className="text-xl lg:text-2xl font-bold text-foreground mb-4">Купить настенную плитку в СПб</h2>
-            <p className="text-foreground/80 leading-relaxed">24 позиции настенной плитки Cersanit в наличии на складе в Янино. Плюс более 150 универсальных коллекций — подходят и для стен. Самовывоз бесплатный, доставка по СПб и ЛО от 1-2 дней.</p>
+            <p className="text-foreground/80 leading-relaxed">Плитка для стен в разных форматах и коллекциях. Актуальные цена и складской остаток указаны в карточке каждого товара; условия получения уточняйте у менеджера.</p>
           </div>
         </div>
       </section>

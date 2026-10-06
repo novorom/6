@@ -162,8 +162,8 @@ export default function AboutPage() {
         <div className="container max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-2xl font-bold text-primary mb-2">200+</div>
-              <p className="text-sm text-muted-foreground">Моделей плитки в наличии на складе</p>
+              <div className="text-2xl font-bold text-primary mb-2">200</div>
+              <p className="text-sm text-muted-foreground">товаров в каталоге</p>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-primary mb-2">15 лет</div>

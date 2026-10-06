@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 import { ChevronRight } from "lucide-react"
 import { products } from "@/lib/products-data"
 import { getCollectionSeo } from "@/lib/collection-seo"
@@ -23,12 +24,21 @@ export async function generateMetadata({
   const product = products.find((p) => p.slug === slug)
 
   if (!product) {
-    return { title: "Товар не найден | Дом Плитки CERSANIT" }
+    return {
+      title: "Товар не найден | Дом Плитки CERSANIT",
+      robots: { index: false, follow: false },
+    }
   }
 
   const isUnit = ["Мозаика", "Ступень", "Плинтус", "Вставка"].includes(product.product_type ?? "")
   const priceUnit = isUnit ? "₽/шт" : "₽/м²"
-  const title = `${product.name} — купить в СПб ${product.price_retail} ${priceUnit}`
+  const title = [
+    product.name,
+    product.format ? `${product.format} см` : "",
+    "— Cersanit",
+    product.price_retail > 0 ? `— ${product.price_retail} ${priceUnit}` : "",
+    "| Санкт-Петербург",
+  ].filter(Boolean).join(" ")
 
   // Уникальное описание: комбинируем характеристики + SEO текст коллекции
   const collectionSeo = product.collection ? getCollectionSeo(product.collection) : null
@@ -36,12 +46,15 @@ export async function generateMetadata({
     ? ` ${collectionSeo.application.slice(0, 120)}...`
     : ""
   const description =
-    `Купить ${product.name} в Санкт-Петербурге. Цена ${product.price_retail} ${priceUnit}.` +
+    `Купить ${product.name} в Санкт-Петербурге.` +
+    (product.price_retail > 0 ? ` Цена ${product.price_retail} ${priceUnit}.` : "") +
     `${product.surface ? ` Поверхность: ${product.surface}.` : ""}` +
     `${product.color ? ` Цвет: ${product.color}.` : ""}` +
     `${product.format ? ` Формат ${product.format} см.` : ""}` +
     `${appText}` +
-    ` Склад Янино, доставка по СПб и ЛО от 1 дня. Артикул: ${product.sku}.`
+    ((product.stock_yanino ?? 0) > 0 ? ` Остаток на складе: ${product.stock_yanino}.` : "") +
+    (product.sku ? ` Артикул: ${product.sku}.` : "") +
+    " Уточните актуальное наличие и условия доставки у менеджера."
 
   return {
     title,
@@ -69,14 +82,7 @@ export default async function ProductPage({
   const { slug } = await params
   const product = products.find((p) => p.slug === slug)
 
-  if (!product) {
-    return (
-      <div className="min-h-screen bg-background py-12 px-4 text-center">
-        <h1 className="text-2xl font-bold text-foreground mb-4">Товар не найден</h1>
-        <Link href="/catalog" className="text-primary hover:underline">Вернуться в каталог</Link>
-      </div>
-    )
-  }
+  if (!product) notFound()
 
   const isUnit = ["Мозаика", "Ступень", "Плинтус", "Вставка"].includes(product.product_type ?? "")
   const priceUnit = isUnit ? "₽/шт" : "₽/м²"
@@ -98,57 +104,28 @@ export default async function ProductPage({
     name: product.name,
     description: collectionSeo?.about
       ? `${collectionSeo.about} ${collectionSeo.application}`
-      : `${product.name} — керамическая плитка и керамогранит Cersanit. Купить в Санкт-Петербурге на складе Янино.`,
+      : `${product.name} — плитка Cersanit из каталога магазина в Санкт-Петербурге. Уточните актуальное наличие, стоимость и условия получения у менеджера.`,
     sku: product.sku,
     mpn: product.bsu,
-    brand: { "@type": "Brand", name: "Cersanit" },
+    ...(product.brand ? { brand: { "@type": "Brand", name: product.brand } } : {}),
     image: product.main_image ? [product.main_image] : [],
     itemCondition: "https://schema.org/NewCondition",
-    offers: {
+    ...(product.price_retail > 0 ? { offers: {
       "@type": "Offer",
       price: product.price_retail,
       priceCurrency: "RUB",
-      availability:
-        (product.stock_yanino ?? 0) > 0 || (product.stock_factory ?? 0) > 0
-          ? "https://schema.org/InStock"
-          : "https://schema.org/PreOrder",
+      availability: (product.stock_yanino ?? 0) > 0
+        ? "https://schema.org/InStock"
+        : (product.stock_factory ?? 0) > 0
+          ? "https://schema.org/PreOrder"
+          : "https://schema.org/OutOfStock",
       seller: {
         "@type": "Organization",
         name: "Дом Плитки CERSANIT",
         url: SITE_URL,
       },
       url: `${SITE_URL}/catalog/${product.slug}`,
-      areaServed: "Санкт-Петербург и Ленинградская область",
-      priceValidUntil: "2026-12-31",
-      shippingDetails: {
-        "@type": "OfferShippingDetails",
-        shippingRate: {
-          "@type": "MonetaryAmount",
-          value: "0",
-          currency: "RUB",
-        },
-        shippingDestination: {
-          "@type": "DefinedRegion",
-          addressCountry: "RU",
-          addressRegion: ["Санкт-Петербург", "Ленинградская область"],
-        },
-        deliveryTime: {
-          "@type": "ShippingDeliveryTime",
-          handlingTime: {
-            "@type": "QuantitativeValue",
-            minValue: 0,
-            maxValue: 1,
-            unitCode: "DAY",
-          },
-          transitTime: {
-            "@type": "QuantitativeValue",
-            minValue: 1,
-            maxValue: 2,
-            unitCode: "DAY",
-          },
-        },
-      },
-    },
+    } } : {}),
     ...(product.color ? { color: product.color } : {}),
     ...(product.material_type ? { material: product.material_type } : {}),
     ...(product.width && product.length
@@ -208,7 +185,7 @@ export default async function ProductPage({
       </div>
 
       {/* Основной клиентский компонент */}
-      <ProductPageClient slug={slug} />
+      <ProductPageClient slug={slug} initialProduct={product} />
 
       {/* SEO-блок с текстом коллекции — SSR, Яндекс читает без JS */}
       {collectionSeo && (
@@ -221,12 +198,12 @@ export default async function ProductPage({
               <p>{collectionSeo.about}</p>
               <p>{collectionSeo.application}</p>
               <p>
-                Купить <strong>{product.name}</strong> в Санкт-Петербурге с доставкой на склад Янино.
-                Цена {product.price_retail} {priceUnit}.
+                <strong>{product.name}</strong> — {product.product_type?.toLowerCase() || "товар Cersanit"} из каталога магазина в Санкт-Петербурге.
+                {product.price_retail > 0 ? ` Цена: ${product.price_retail} ${priceUnit}.` : ""}
+                {(product.stock_yanino ?? 0) > 0 ? ` Остаток на складе Янино: ${product.stock_yanino}.` : " Актуальное наличие уточняйте у менеджера."}
                 {product.surface ? ` Поверхность: ${product.surface}.` : ""}
                 {product.wear_class ? ` Класс износостойкости: ${product.wear_class}.` : ""}
                 {product.slip_class ? ` Класс скользкости: ${product.slip_class}.` : ""}
-                {" "}Доставка по Санкт-Петербургу и Ленинградской области от 1 рабочего дня.
               </p>
             </div>
             <div className="mt-4">
@@ -249,14 +226,14 @@ export default async function ProductPage({
               {product.name} — купить в СПб
             </h2>
             <p className="text-sm text-foreground/75 leading-relaxed">
-              {product.name} — {product.product_type?.toLowerCase() || "керамическая плитка"} от польского
-              производителя Cersanit.
+              {product.name} — {product.product_type?.toLowerCase() || "керамическая плитка"} Cersanit.
               {product.format ? ` Формат ${product.format} см.` : ""}
               {product.surface ? ` Поверхность ${product.surface.toLowerCase()}.` : ""}
               {product.color ? ` Цвет: ${product.color}.` : ""}
-              {" "}Сертифицирована в России. В наличии на складе в Янино-1 (СПб).
-              Самовывоз бесплатный. Доставка по Санкт-Петербургу и Ленинградской области
-              от 1 рабочего дня. Цена {product.price_retail} {priceUnit}. Артикул: {product.sku}.
+              {(product.stock_yanino ?? 0) > 0 ? ` Остаток на складе Янино-1: ${product.stock_yanino}.` : " Актуальное наличие уточняйте у менеджера."}
+              {product.price_retail > 0 ? ` Цена: ${product.price_retail} ${priceUnit}.` : ""}
+              {product.sku ? ` Артикул: ${product.sku}.` : ""}
+              {" "}Условия доставки и самовывоза согласуйте с менеджером.
             </p>
           </div>
         </section>

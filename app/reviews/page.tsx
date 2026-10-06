@@ -202,7 +202,7 @@ export default function ReviewsPage() {
             <ul className="space-y-2 text-sm text-foreground/70">
               <li className="flex items-start gap-2">
                 <span className="text-foreground font-bold">✓</span>
-                <span>Более 750 позиций в наличии на складе</span>
+                <span>Актуальные остатки указаны в карточках товаров</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-foreground font-bold">✓</span>

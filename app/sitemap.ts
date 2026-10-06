@@ -3,22 +3,17 @@ import { products } from "@/lib/products-data"
 
 const SITE_URL = "https://cersanit-spb.ru"
 
-// Дата последнего обновления прайса и каталога
-const CATALOG_UPDATED = "2026-04-16"
-// Дата последней правки статичных страниц сайта
-const SITE_UPDATED = "2026-04-16"
-
 export default function sitemap(): MetadataRoute.Sitemap {
   // Static pages — реальные даты последнего изменения, НЕ динамические
   const staticPages: MetadataRoute.Sitemap = [
-    { url: SITE_URL,                        lastModified: CATALOG_UPDATED, changeFrequency: "weekly",  priority: 1.0 },
-    { url: `${SITE_URL}/catalog`,           lastModified: CATALOG_UPDATED, changeFrequency: "weekly",  priority: 0.9 },
+    { url: SITE_URL,                        changeFrequency: "weekly",  priority: 1.0 },
+    { url: `${SITE_URL}/catalog`,           changeFrequency: "weekly",  priority: 0.9 },
     { url: `${SITE_URL}/stroy`,             changeFrequency: "weekly",  priority: 0.8 },
-    { url: `${SITE_URL}/collections`,       lastModified: CATALOG_UPDATED, changeFrequency: "weekly",  priority: 0.8 },
-    { url: `${SITE_URL}/delivery`,          lastModified: SITE_UPDATED,    changeFrequency: "monthly", priority: 0.6 },
-    { url: `${SITE_URL}/reviews`,           lastModified: "2026-02-01",    changeFrequency: "monthly", priority: 0.6 },
-    { url: `${SITE_URL}/about`,             lastModified: SITE_UPDATED,    changeFrequency: "yearly",  priority: 0.5 },
-    { url: `${SITE_URL}/contacts`,          lastModified: SITE_UPDATED,    changeFrequency: "yearly",  priority: 0.5 },
+    { url: `${SITE_URL}/collections`,       changeFrequency: "weekly",  priority: 0.8 },
+    { url: `${SITE_URL}/delivery`,             changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE_URL}/reviews`,              changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE_URL}/about`,                changeFrequency: "yearly",  priority: 0.5 },
+    { url: `${SITE_URL}/contacts`,             changeFrequency: "yearly",  priority: 0.5 },
   ]
 
   // SEO landing pages — реальные даты создания/обновления
@@ -71,9 +66,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "blog/kak-sozdat-dizajn-vannoj-v-stile-loft": "2025-05-01",
   }
 
-  const seoPages: MetadataRoute.Sitemap = Object.entries(seoLandingDates).map(([slug, date]) => ({
+  const seoPages: MetadataRoute.Sitemap = Object.keys(seoLandingDates).map((slug) => ({
     url: `${SITE_URL}/${slug}`,
-    lastModified: date,
     changeFrequency: slug.startsWith("blog/") ? ("monthly" as const) : ("monthly" as const),
     priority: slug === "blog" ? 0.8 : slug.startsWith("blog/") ? 0.75 : 0.8,
   }))
@@ -105,7 +99,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter((slug) => (collectionProductCount[slug] || 0) >= 3)
     .map((slug) => ({
       url: `${SITE_URL}/collections/${slug}`,
-      lastModified: CATALOG_UPDATED,
       changeFrequency: "monthly" as const,
       priority: 0.7,
     }))
@@ -137,8 +130,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
       return {
         url: `${SITE_URL}/catalog/${product.slug}`,
-        lastModified: CATALOG_UPDATED,
-        changeFrequency: "monthly" as const,
+          changeFrequency: "monthly" as const,
         priority: 0.75,
         images: allImages.length > 0 ? allImages : undefined,
       }

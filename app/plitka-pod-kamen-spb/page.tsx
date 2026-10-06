@@ -96,7 +96,7 @@ export default function PlitkaПодКамень() {
           </h1>
           <p className="mt-4 text-primary-foreground/80 text-lg leading-relaxed max-w-3xl">
             Природная фактура гранита, сланца и песчаника без сложного ухода. Royal Stone, Slate,
-            Stonehouse, Sandstone — {stoneProducts.length} позиций в наличии на складе в Янино.
+            Stonehouse, Sandstone — {stoneProducts.length} товаров в подборке. Проверьте остаток в карточке каждого товара..
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="#products" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-background text-foreground font-medium text-sm hover:bg-background/90 transition-colors">
@@ -115,7 +115,7 @@ export default function PlitkaПодКамень() {
           <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
             Керамогранит под камень — {stoneProducts.length} позиций
           </h2>
-          <p className="text-muted-foreground mb-8">Все товары в наличии на складе Янино</p>
+          <p className="text-muted-foreground mb-8">Проверьте фактический остаток в карточке товара</p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
             {stoneProducts.map((product, index) => (
               <ProductCard key={product.id} product={product} priority={index < 4} />

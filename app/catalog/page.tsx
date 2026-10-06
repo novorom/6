@@ -3,18 +3,28 @@ import { CatalogClient } from "./catalog-client"
 import { products } from "@/lib/products-data"
 import type { Product } from "@/lib/products-data"
 
-export const metadata: Metadata = {
-  title: "Каталог плитки Cersanit в СПб — купить керамогранит и керамическую плитку со склада",
-  description: "Каталог керамической плитки и керамогранита Cersanit в Санкт-Петербурге. 200+ моделей в наличии на складе Янино. Цены от 850 ₽/м². Доставка по СПб и ЛО от 1 дня. Самовывоз бесплатно.",
-  alternates: { canonical: "https://cersanit-spb.ru/catalog" },
-  openGraph: {
-    title: "Каталог плитки Cersanit в СПб — 200+ моделей в наличии",
-    description: "Керамическая плитка и керамогранит Cersanit со склада в Янино. Доставка по СПб от 1 дня.",
-    url: "https://cersanit-spb.ru/catalog",
-    siteName: "Дом Плитки CERSANIT",
-    locale: "ru_RU",
-    type: "website",
-  },
+type CatalogPageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> }
+
+export async function generateMetadata({ searchParams }: CatalogPageProps): Promise<Metadata> {
+  const params = await searchParams
+  const hasFilters = Object.values(params).some((value) => value !== undefined)
+  const count = products.filter((p) => p.name?.trim() && p.slug && p.price_retail > 0).length
+  const title = "Каталог плитки Cersanit в Санкт-Петербурге — цены и наличие"
+  const description = `Каталог плитки, керамогранита и декоров Cersanit в Санкт-Петербурге. ${count} товаров с ценами и характеристиками; актуальный складской остаток указан в карточке.`
+  return {
+    title,
+    description,
+    alternates: { canonical: "https://cersanit-spb.ru/catalog" },
+    ...(hasFilters ? { robots: { index: false, follow: true } } : {}),
+    openGraph: {
+      title,
+      description,
+      url: "https://cersanit-spb.ru/catalog",
+      siteName: "Дом Плитки CERSANIT",
+      locale: "ru_RU",
+      type: "website",
+    },
+  }
 }
 
 export default function CatalogPage() {
