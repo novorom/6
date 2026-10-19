@@ -65,6 +65,7 @@ const articles = [
   { href: "/blog/antiskolzyashhaya-plitka-dlya-doma", title: "Нескользкая плитка для дома: безопасность на полу в ванной и прихожей", desc: "Читайте на нашем сайте.", date: "2026-09-28", time: "5 мин" },
   { href: "/blog/kak-ukladyvat-plitku-diagonalyu", title: "Укладка плитки по диагонали: эффект и нюансы монтажа", desc: "Читайте на нашем сайте.", date: "2026-10-05", time: "5 мин" },
   { href: "/blog/plitka-cersanit-preimushhestva", title: "Почему Cersanit: преимущества плитки польского производителя", desc: "Читайте на нашем сайте.", date: "2026-10-12", time: "5 мин" },
+  { href: "/blog/temnyj-keramogranit-v-interere", title: "Тёмный керамогранит в интерьере: смелые решения для современного дома", desc: "Читайте на нашем сайте.", date: "2026-10-19", time: "5 мин" },
 ]
 
 export default function BlogIndex() {
