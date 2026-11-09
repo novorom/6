@@ -68,6 +68,7 @@ const articles = [
   { href: "/blog/temnyj-keramogranit-v-interere", title: "Тёмный керамогранит в интерьере: смелые решения для современного дома", desc: "Читайте на нашем сайте.", date: "2026-10-19", time: "5 мин" },
   { href: "/blog/plitka-dlya-bassejnov-i-saun", title: "Плитка для бассейна и сауны: что выбрать в Санкт-Петербурге", desc: "Читайте на нашем сайте.", date: "2026-10-26", time: "5 мин" },
   { href: "/blog/kak-vybrat-plitku-pod-stil-interera", title: "Плитка под стиль интерьера: современный, классика, лофт, скандинавский", desc: "Читайте на нашем сайте.", date: "2026-11-02", time: "5 мин" },
+  { href: "/blog/skolko-vremeni-zanimaet-ukladka-plitki", title: "Сколько времени занимает укладка плитки: сроки и нормы", desc: "Читайте на нашем сайте.", date: "2026-11-09", time: "5 мин" },
 ]
 
 export default function BlogIndex() {
