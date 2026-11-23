@@ -70,6 +70,7 @@ const articles = [
   { href: "/blog/kak-vybrat-plitku-pod-stil-interera", title: "Плитка под стиль интерьера: современный, классика, лофт, скандинавский", desc: "Читайте на нашем сайте.", date: "2026-11-02", time: "5 мин" },
   { href: "/blog/skolko-vremeni-zanimaet-ukladka-plitki", title: "Сколько времени занимает укладка плитки: сроки и нормы", desc: "Читайте на нашем сайте.", date: "2026-11-09", time: "5 мин" },
   { href: "/blog/teplovoj-rasshireniya-plitki-shhvy", title: "Зачем нужны швы при укладке плитки: деформационные и затирочные", desc: "Читайте на нашем сайте.", date: "2026-11-16", time: "5 мин" },
+  { href: "/blog/plitka-v-gostinoj-na-pol", title: "Плитка в гостиной на пол: как не пожалеть о выборе", desc: "Читайте на нашем сайте.", date: "2026-11-23", time: "5 мин" },
 ]
 
 export default function BlogIndex() {
